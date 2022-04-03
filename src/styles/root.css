@@ -1,0 +1,15 @@
+:root {
+  /* Colors */
+  --color-background: #131316;
+  --color-background-modal: #1C1C21;
+  --color-border: #4C4CFF;
+  --color-text-dark-grey: #8585AD;
+  --color-text-primary-light: #F2F2F3;
+  /* Breakpoints*/
+  --breakpoint-min-width-s: 320px;
+  /* Font family */
+  --typography-font-family: 'JetBrains Mono', Arial, sans-serif;
+  /* Font weight */
+  --typography-font-weight-regular: 400;
+  --typography-font-weight-bold: 700;
+}
