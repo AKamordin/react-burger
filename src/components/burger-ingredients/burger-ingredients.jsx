@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 
 export default function BurgerIngredients(props) {
-  const {ingredients} = props;
+  const {ingredients, selectIngredientHandler, popupHandler} = props;
   const [tab, setTab] = useState(BUN)
   const setCurrentTab = (key) => {
     setTab(INGREDIENT_GROUPS.filter(g => g.key === key)[0]);
@@ -24,7 +24,12 @@ export default function BurgerIngredients(props) {
         }
       </ul>
       <div className={`${styles.list} mt-10`}>
-          <BurgerIngredientGroup ingredients={ingredients.filter(i => i.type === tab.key)} title={tab.value} />
+          <BurgerIngredientGroup
+            ingredients={ingredients.filter(i => i.type === tab.key)}
+            title={tab.value}
+            selectIngredientHandler={selectIngredientHandler}
+            popupHandler={popupHandler}
+          />
       </div>
     </section>
   )
@@ -32,4 +37,6 @@ export default function BurgerIngredients(props) {
 
 BurgerIngredients.propTypes = {
   ingredients: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
+  selectIngredientHandler: PropTypes.func.isRequired,
+  popupHandler: PropTypes.func.isRequired,
 };

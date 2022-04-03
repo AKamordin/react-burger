@@ -1,0 +1,43 @@
+.section {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 40px;
+  background-color: var(--color-background-modal);
+  border: 1px solid rgba(76, 76, 255, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0 24px 32px rgba(0, 0, 0, 0.04), 0 16px 24px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.04);
+  z-index: 1099;
+  min-width: 720px;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  margin-right: auto;
+}
+
+.closeButton {
+  transition: all 0.3s ease;
+  background-color: transparent;
+  border: 0;
+}
+
+.closeButton:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.closeButton:active {
+  transform: scale(0.9);
+}

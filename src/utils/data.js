@@ -224,6 +224,6 @@ export const currentOrder = [
 export const statusCooking = {key: 'cooking', value: 'Ваш заказ начали готовить'}
 
 export const order = {
-  orderNumber: '034536',
+  orderNumber: "034536",
   orderStatus: statusCooking,
 }

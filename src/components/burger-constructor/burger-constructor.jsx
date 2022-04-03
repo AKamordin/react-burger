@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 
 export default function BurgerConstructor(props) {
-  const {currentOrder} = props;
+  const {currentOrder, popupHandler} = props;
   const total = currentOrder.reduce((acc, cur) => acc + cur.price, 0)
   return currentOrder && currentOrder.length > 1 && (
     <section className={`${styles.section} pt-25`}>
@@ -48,7 +48,7 @@ export default function BurgerConstructor(props) {
           <span className="text text_type_digits-medium mr-2">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button className="pt-10" type="primary" size="medium">Оформить заказ</Button>
+        <Button onClick={() => popupHandler(true)} className="pt-10" type="primary" size="medium">Оформить заказ</Button>
       </div>
     </section>
   )
@@ -56,4 +56,5 @@ export default function BurgerConstructor(props) {
 
 BurgerConstructor.propTypes = {
   currentOrder: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
+  popupHandler: PropTypes.func.isRequired,
 };

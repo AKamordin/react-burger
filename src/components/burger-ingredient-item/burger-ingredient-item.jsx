@@ -5,11 +5,17 @@ import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 
 export default function BurgerIngredientItem(props) {
-  const {ingredient, count} = props;
+  const {ingredient, count, selectIngredientHandler, popupHandler} = props;
+
+  const handleIngredientClick = () => {
+    selectIngredientHandler(ingredient)
+    popupHandler(true)
+  }
+
   return (
-    <article className={styles.item}>
+    <article onClick={handleIngredientClick} className={styles.item}>
       {
-        count && count > 0 &&
+        count > 0 &&
         <Counter count={count} size="default" />
       }
       <img src={ingredient.image} alt={ingredient.name} className={`${styles.image} mb-1`}/>
@@ -25,4 +31,6 @@ export default function BurgerIngredientItem(props) {
 BurgerIngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
   count: PropTypes.number,
+  selectIngredientHandler: PropTypes.func.isRequired,
+  popupHandler: PropTypes.func.isRequired,
 };
