@@ -12,6 +12,8 @@
 }
 
 .list {
+  list-style: none;
+  margin: 0;
   overflow: auto;
   max-height: calc(100vh - 284px - 80px);
 }
