@@ -13,9 +13,9 @@ export default function App() {
       <div className={styles.content}>
         <AppHeader />
         <Routes>
-          <Route path="/" element={<ConstructorPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path={`${process.env.PUBLIC_URL}/`} element={<ConstructorPage />} />
+          <Route path={`${process.env.PUBLIC_URL}/orders`} element={<OrdersPage />} />
+          <Route path={`${process.env.PUBLIC_URL}/profile`} element={<ProfilePage />} />
         </Routes>
       </div>
     </div>
