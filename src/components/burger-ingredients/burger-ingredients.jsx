@@ -1,13 +1,14 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useContext} from "react";
 import styles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {BUN, INGREDIENT_GROUPS, MAIN, SAUCE} from "../../utils/constants";
 import BurgerIngredientGroup from "../burger-ingredient-group/burger-ingredient-group";
 import PropTypes from "prop-types";
-import {ingredientType} from "../../utils/types";
+import {IngredientsContext} from "../../services/ingredients-context";
 
 export default function BurgerIngredients(props) {
-  const {ingredients, selectIngredientHandler, popupHandler} = props;
+  const {popupHandler} = props;
+  const {ingredientsState} = useContext(IngredientsContext)
   const [tab, setTab] = useState(BUN)
   const bunRef = useRef();
   const sauceRef = useRef();
@@ -35,25 +36,22 @@ export default function BurgerIngredients(props) {
       <ul className={`${styles.list} mt-10`}>
         <li ref={bunRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.filter(i => i.type === BUN.key)}
+            ingredients={ingredientsState.data.filter(i => i.type === BUN.key)}
             title={BUN.value}
-            selectIngredientHandler={selectIngredientHandler}
             popupHandler={popupHandler}
           />
         </li>
         <li ref={sauceRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.filter(i => i.type === SAUCE.key)}
+            ingredients={ingredientsState.data.filter(i => i.type === SAUCE.key)}
             title={SAUCE.value}
-            selectIngredientHandler={selectIngredientHandler}
             popupHandler={popupHandler}
           />
         </li>
         <li ref={mainRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.filter(i => i.type === MAIN.key)}
+            ingredients={ingredientsState.data.filter(i => i.type === MAIN.key)}
             title={MAIN.value}
-            selectIngredientHandler={selectIngredientHandler}
             popupHandler={popupHandler}
           />
         </li>
@@ -63,7 +61,5 @@ export default function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
-  selectIngredientHandler: PropTypes.func.isRequired,
   popupHandler: PropTypes.func.isRequired,
 };

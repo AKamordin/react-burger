@@ -17,6 +17,22 @@ class Api {
     }
   }
 
+  async doAsyncPostRequest(url, data, onSuccess = (f) => f, onError = (f) => f) {
+    try {
+      const res = await fetch(`${this._baseUrl}/${url}`, {
+        ...this._getDefaultConfig(),
+        method: 'POST',
+        body: JSON.stringify(data)
+      })
+      this._handleError(res)
+      const json = await res.json()
+      return onSuccess(json)
+    } catch (err) {
+      console.log(err.message)
+      onError(err)
+    }
+  }
+
   _handleError(res) {
     if (!res.ok) {
       const text = res.statusText ? res.statusText : res.url;
