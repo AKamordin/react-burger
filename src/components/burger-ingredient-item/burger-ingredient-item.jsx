@@ -1,14 +1,16 @@
-import React from "react";
+import React, {useContext} from "react";
 import styles from './burger-ingredient-item.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
+import {SelectedIngredientContext} from "../../services/selected-ingredient-context";
 
 export default function BurgerIngredientItem(props) {
-  const {ingredient, count, selectIngredientHandler, popupHandler} = props;
+  const {ingredient, count, popupHandler} = props;
+  const {setSelectedIngredient} = useContext(SelectedIngredientContext)
 
   const handleIngredientClick = () => {
-    selectIngredientHandler(ingredient)
+    setSelectedIngredient(ingredient)
     popupHandler(true)
   }
 
@@ -31,6 +33,5 @@ export default function BurgerIngredientItem(props) {
 BurgerIngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
   count: PropTypes.number,
-  selectIngredientHandler: PropTypes.func.isRequired,
   popupHandler: PropTypes.func.isRequired,
 };

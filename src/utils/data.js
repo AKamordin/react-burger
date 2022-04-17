@@ -211,19 +211,4 @@ export const data = [
   }
 ]
 
-export const currentOrder = [
-  data.filter(d => d._id === "60d3b41abdacab0026a733c6")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733ce")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733c9")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733d1")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733d0")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733d0")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733c6")[0],
-]
-
 export const statusCooking = {key: 'cooking', value: 'Ваш заказ начали готовить'}
-
-export const order = {
-  orderNumber: "034536",
-  orderStatus: statusCooking,
-}
