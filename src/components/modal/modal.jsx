@@ -4,9 +4,16 @@ import styles from './modal.module.css';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
+import {useDispatch} from "react-redux";
+import {unsetPopup} from "../../services/actions/popup";
 
 export default function Modal(props) {
-  const {title, popupHandler, onEscKeydown, children} = props;
+  const {title, onEscKeydown, children} = props;
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    dispatch(unsetPopup())
+  }
 
   useEffect(() => {
     document.addEventListener('keydown', onEscKeydown);
@@ -23,7 +30,7 @@ export default function Modal(props) {
             title &&
             <h2 className={`${styles.title} text text_type_main-large`}>{title}</h2>
           }
-          <button onClick={() => popupHandler(false)} className={styles.closeButton}>
+          <button onClick={handleClose} className={styles.closeButton}>
             <CloseIcon type="primary" />
           </button>
         </header>
@@ -31,7 +38,7 @@ export default function Modal(props) {
           children
         }
       </section>
-      <ModalOverlay popupHandler={popupHandler} />
+      <ModalOverlay popupHandler={handleClose} />
     </>,
     document.querySelector('#modals')
   )
@@ -39,7 +46,6 @@ export default function Modal(props) {
 
 Modal.propTypes = {
   title: PropTypes.string,
-  popupHandler: PropTypes.func.isRequired,
   onEscKeydown: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 };

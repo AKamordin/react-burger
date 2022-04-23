@@ -1,14 +1,14 @@
-import React, {useContext} from "react";
+import React from "react";
 import styles from './burger-ingredient-group.module.css';
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 import BurgerIngredientItem from "../burger-ingredient-item/burger-ingredient-item";
-import {OrderContext} from "../../services/order-context";
 import {BUN} from "../../utils/constants";
+import {useSelector} from "react-redux";
 
 export default function BurgerIngredientGroup(props) {
-  const {title, ingredients, popupHandler} = props;
-  const {orderState} = useContext(OrderContext)
+  const {title, ingredients} = props;
+  const burger = useSelector(({burger}) => burger)
   function calcCount(burger, ingredient) {
     if (ingredient.type === BUN.key) {
       return burger.bun && burger.bun._id === ingredient._id ? 1 : null
@@ -26,8 +26,7 @@ export default function BurgerIngredientGroup(props) {
               <li key={ingredient._id}>
                 <BurgerIngredientItem
                   ingredient={ingredient}
-                  count={calcCount(orderState.burger, ingredient)}
-                  popupHandler={popupHandler}
+                  count={calcCount(burger, ingredient)}
                 />
               </li>
             ))
@@ -41,5 +40,4 @@ export default function BurgerIngredientGroup(props) {
 BurgerIngredientGroup.propTypes = {
   title: PropTypes.string.isRequired,
   ingredients: PropTypes.arrayOf(ingredientType.isRequired).isRequired,
-  popupHandler: PropTypes.func.isRequired,
 };

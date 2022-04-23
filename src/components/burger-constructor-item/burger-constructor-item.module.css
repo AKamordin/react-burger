@@ -1,0 +1,15 @@
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
+.dragging {
+  opacity: 0;
+}
+
+.dropping {
+  filter: grayscale(100);
+}

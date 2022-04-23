@@ -7,7 +7,6 @@ import {APP_PATH} from "../../utils/constants";
 
 export default function AppHeader() {
   const location = useLocation();
-  console.log(location.pathname);
   const isConstructor = location.pathname === `${APP_PATH}/`;
   const isOrders = location.pathname === `${APP_PATH}/orders`;
   const isProfile = location.pathname === `${APP_PATH}/profile`;

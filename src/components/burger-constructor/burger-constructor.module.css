@@ -3,11 +3,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  gap: 16px;
+  gap: 20px;
+}
+
+.dropArea {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.droppable {
+  border: 1px dashed var(--droppable-border-color);
+  margin: -1px;
 }
 
 .list {
-  margin: 0;
+  margin: 16px 0;
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -29,14 +42,6 @@
 
 .list::-webkit-scrollbar-thumb:hover {
   background-color: rgb(99, 99, 128);
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  width: 100%;
 }
 
 .button_container {

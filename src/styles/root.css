@@ -6,4 +6,6 @@
   --breakpoint-min-width-s: 320px;
   /* Font family */
   --typography-font-family: 'JetBrains Mono', Arial, sans-serif;
+  /* Borders */
+  --droppable-border-color: #4C4CFF;
 }

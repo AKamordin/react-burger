@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './burger-ingredient-details.module.css'
+import {ingredientType} from "../../utils/types";
 
 export default function BurgerIngredientDetails(props) {
   const {ingredient} = props;
@@ -41,4 +42,8 @@ export default function BurgerIngredientDetails(props) {
       </ul>
     </article>
   )
+}
+
+BurgerIngredientDetails.propTypes = {
+  ingredient: ingredientType.isRequired,
 }
