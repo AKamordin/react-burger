@@ -1,4 +1,9 @@
-import {DATA, ERROR, INGREDIENTS, LOADING, SELECTED, SET} from "../../utils/constants";
+import {
+  SET_DATA_INGREDIENTS,
+  SET_ERROR_INGREDIENTS,
+  SET_LOADING_INGREDIENTS,
+  SET_SELECTED_INGREDIENTS
+} from "../actions/ingredients";
 
 const initialState = {
   ingredients: {
@@ -12,7 +17,7 @@ const initialState = {
 
 export const ingredients = (state = initialState, {type, payload} = {}) => {
   switch (type) {
-    case SET + LOADING + INGREDIENTS:
+    case SET_LOADING_INGREDIENTS:
       return {
         ...state,
         ingredients: {
@@ -20,7 +25,7 @@ export const ingredients = (state = initialState, {type, payload} = {}) => {
           loading: true,
         },
       }
-    case SET + DATA + INGREDIENTS:
+    case SET_DATA_INGREDIENTS:
       return {
         ...state,
         ingredients: {
@@ -31,7 +36,7 @@ export const ingredients = (state = initialState, {type, payload} = {}) => {
           message: null,
         },
       }
-    case SET + ERROR + INGREDIENTS:
+    case SET_ERROR_INGREDIENTS:
       return {
         ...state,
         ingredients: {
@@ -42,7 +47,7 @@ export const ingredients = (state = initialState, {type, payload} = {}) => {
           message: payload,
         },
       }
-    case SET + SELECTED + INGREDIENTS:
+    case SET_SELECTED_INGREDIENTS:
       return {
         ...state,
         selected: payload,

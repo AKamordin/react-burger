@@ -32,8 +32,10 @@ export default function BurgerConstructor() {
   });
 
   useEffect(() => {
-    if (burger && burger.bun) {
+    if (burger.bun) {
       dispatch(setTotalOrder([burger.bun, ...burger.ingredients]))
+    } else {
+      dispatch(setTotalOrder([...burger.ingredients]))
     }
   }, [dispatch, burger])
   return (
@@ -41,21 +43,23 @@ export default function BurgerConstructor() {
       <div ref={dropTarget} className={`${styles.dropArea} ${isHover && styles.droppable} pt-5 pb-5`}>
         <div className="pr-6">
           {
-            burger.bun &&
+            burger.bun ? (
             <ConstructorElement
               type="top"
               isLocked={true}
               text={`${burger.bun.name} (верх)`}
               price={burger.bun.price}
               thumbnail={burger.bun.image}
-            />
+            />) : (
+              <p className="text text_type_main-large pt-3">Пожалуйста, перенесите сюда булку для создания заказа</p>
+            )
           }
         </div>
         <ul className={`${styles.list} pl-4 pr-4`}>
           {
             burger.ingredients.map((ingredient, index) =>
               (
-                <BurgerConstructorItem index={index} ingredient={ingredient} />
+                  <BurgerConstructorItem key={ingredient.uuid} index={index} ingredient={ingredient} />
               )
             )
           }
@@ -79,7 +83,7 @@ export default function BurgerConstructor() {
           <CurrencyIcon type="primary" />
         </div>
         {
-          order.total > 0 &&
+          burger && burger.bun &&
           <Button onClick={handleMakeOrder} className="pt-10" type="primary" size="medium">Оформить заказ</Button>
         }
       </div>

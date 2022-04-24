@@ -1,44 +1,40 @@
-import {data} from "../../utils/data";
-import {ADD, BURGER, DATA, DELETE, INGREDIENT, INIT, SET, SORT} from "../../utils/constants";
+import {
+  ADD_INGREDIENT_BURGER,
+  DELETE_INGREDIENT_BURGER,
+  INIT_DATA_BURGER,
+  SET_INGREDIENT_BURGER,
+  SORT_INGREDIENT_BURGER
+} from "../actions/burger";
+import { v4 as getUUID } from "uuid";
 
 const initialState = {
   bun: null,
   ingredients: [],
 }
 
-const testBurger = [
-  data.filter(d => d._id === "60d3b41abdacab0026a733c6")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733ce")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733c9")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733d1")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733d0")[0],
-  data.filter(d => d._id === "60d3b41abdacab0026a733d0")[0],
-]
-
 export const burger = (state = initialState, {type, payload} = {}) => {
   switch (type) {
-    case INIT + DATA + BURGER:
+    case INIT_DATA_BURGER:
       return {
         ...state,
-        bun: testBurger[0],
-        ingredients: testBurger.slice(1)
+        ...initialState
       }
-    case SET + INGREDIENT + BURGER:
+    case SET_INGREDIENT_BURGER:
       return {
         ...state,
         bun: payload,
       }
-    case ADD + INGREDIENT + BURGER:
+    case ADD_INGREDIENT_BURGER:
       return {
         ...state,
-        ingredients: [...state.ingredients.slice(0, payload.index), payload.ingredient, ...state.ingredients.slice(payload.index)],
+        ingredients: [...state.ingredients.slice(0, payload.index), {...payload.ingredient, uuid: getUUID()}, ...state.ingredients.slice(payload.index)],
       }
-    case DELETE + INGREDIENT + BURGER:
+    case DELETE_INGREDIENT_BURGER:
       return {
         ...state,
         ingredients: [...state.ingredients].filter((_, index) => index !== payload),
       }
-    case SORT + INGREDIENT + BURGER:
+    case SORT_INGREDIENT_BURGER:
       const array = [...state.ingredients];
       array.splice(payload.toIndex, 0, ...array.splice(payload.fromIndex, 1))
       return {

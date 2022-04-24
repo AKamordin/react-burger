@@ -28,7 +28,7 @@ export default function BurgerConstructorItem(props) {
     collect: monitor => ({
       isHover: monitor.isOver()
     }),
-    drop(dragObject, monitor) {
+    drop(dragObject) {
       if (dragObject.index === index) {
         return
       }
@@ -39,7 +39,7 @@ export default function BurgerConstructorItem(props) {
   dragRef(dropRef(ref))
 
   return (
-    <li ref={ref} key={index} className={`${styles.item} ${isDragging && styles.dragging} ${isHover && styles.dropping}`}>
+    <li ref={ref} className={`${styles.item} ${isDragging && styles.dragging} ${isHover && styles.dropping}`}>
       <DragIcon type={"primary"}/>
       <ConstructorElement
         text={ingredient.name}

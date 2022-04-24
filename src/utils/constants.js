@@ -26,3 +26,6 @@ export const INGREDIENTS = "_INGREDIENTS"
 export const ORDER = "_ORDER"
 export const BURGER = "_BURGER"
 export const POPUP = "_POPUP"
+
+// Status
+export const statusCooking = {key: 'cooking', value: 'Ваш заказ начали готовить'}

@@ -1,30 +1,34 @@
 import {DATA, ERROR, INGREDIENTS, LOADING, SELECTED, SET} from "../../utils/constants";
 import api from "../../api/api";
-import {initBurger} from "./burger";
+
+export const SET_LOADING_INGREDIENTS = SET + LOADING + INGREDIENTS
+export const SET_DATA_INGREDIENTS = SET + DATA + INGREDIENTS
+export const SET_ERROR_INGREDIENTS = SET + ERROR + INGREDIENTS
+export const SET_SELECTED_INGREDIENTS = SET + SELECTED + INGREDIENTS
 
 export const setLoadingIngredients = () => (
   {
-    type: SET + LOADING + INGREDIENTS,
+    type: SET_LOADING_INGREDIENTS,
   }
 )
 
 export const setDataIngredients = (value) => (
   {
-    type: SET + DATA + INGREDIENTS,
+    type: SET_DATA_INGREDIENTS,
     payload: value
   }
 )
 
 export const setErrorIngredients = (value) => (
   {
-    type: SET + ERROR + INGREDIENTS,
+    type: SET_ERROR_INGREDIENTS,
     payload: value
   }
 )
 
 export const setSelectedIngredients = (value) => (
   {
-    type: SET + SELECTED + INGREDIENTS,
+    type: SET_SELECTED_INGREDIENTS,
     payload: value
   }
 )
@@ -36,7 +40,6 @@ export const getIngredients = () => async dispatch => {
     (data) => {
       if (data.success) {
         dispatch(setDataIngredients(data.data))
-        dispatch(initBurger())
       } else {
         dispatch(setErrorIngredients('Данные не получены'))
       }

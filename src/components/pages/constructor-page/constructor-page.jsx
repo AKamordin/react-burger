@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from './constructor-page.module.css'
 import pagesStyles from '../pages.module.css';
@@ -12,6 +12,9 @@ import {unsetPopup} from "../../../services/actions/popup";
 import {INGREDIENTS, ORDER} from "../../../utils/constants";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
+import {Loader} from "../../loader/loader";
+import {initDataOrder} from "../../../services/actions/order";
+import {initBurger} from "../../../services/actions/burger";
 
 
 export default function ConstructorPage() {
@@ -21,12 +24,18 @@ export default function ConstructorPage() {
   const order = useSelector(({order}) => order)
   const popup = useSelector(({popup}) => popup)
 
-  const handleEscKeydown = useCallback((event) => {
-    event.key === "Escape" && dispatch(unsetPopup());
-  }, [dispatch])
+  const handleIngredientPopupClose = () => {
+    dispatch(unsetPopup())
+  }
+
+  const handleOrderPopupClose = () => {
+    dispatch(unsetPopup())
+    dispatch(initDataOrder())
+    dispatch(initBurger())
+  }
 
   useEffect( () => {
-    dispatch(getIngredients());
+    dispatch(getIngredients())
   }, [dispatch])
 
   return (
@@ -36,7 +45,13 @@ export default function ConstructorPage() {
         <main className={styles.constructor}>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />
-            <BurgerConstructor />
+            {
+              order.loading ? (
+              <Loader size="large" />
+              ) : (
+                <BurgerConstructor />
+              )
+            }
           </DndProvider>
         </main>
       }
@@ -56,13 +71,13 @@ export default function ConstructorPage() {
       }
       {
         popup.show && popup.type === ORDER &&
-          <Modal onEscKeydown={handleEscKeydown}>
-            <OrderDetails />
+          <Modal onClose={handleOrderPopupClose}>
+            <OrderDetails onClose={handleOrderPopupClose} />
           </Modal>
       }
       {
         popup.show && popup.type === INGREDIENTS &&
-        <Modal title={'Детали ингредиентов'} onEscKeydown={handleEscKeydown}>
+        <Modal title={'Детали ингредиентов'} onClose={handleIngredientPopupClose}>
           <BurgerIngredientDetails ingredient={selected} />
         </Modal>
       }

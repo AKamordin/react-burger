@@ -1,7 +1,10 @@
-import {statusCooking} from "../../utils/data";
-import {BUN, DATA, ERROR, LOADING, ORDER, SET, TOTAL} from "../../utils/constants";
+import {BUN, statusCooking} from "../../utils/constants";
+import {INIT_DATA_ORDER, SET_DATA_ORDER, SET_ERROR_ORDER, SET_LOADING_ORDER, SET_TOTAL_ORDER} from "../actions/order";
 
 const calcTotal = (ingredients) => {
+  if (!ingredients) {
+    return 0
+  }
   return ingredients.reduce((acc, cur) => acc + (cur.type === BUN.key ? 2 : 1) * cur.price, 0)
 }
 
@@ -17,12 +20,17 @@ const initialState = {
 
 export const order = (state = initialState, {type, payload} = {}) => {
   switch (type) {
-    case SET + LOADING + ORDER:
+    case INIT_DATA_ORDER:
+      return {
+        ...state,
+        ...initialState,
+      }
+    case SET_LOADING_ORDER:
       return {
         ...state,
         loading: true,
       }
-    case SET + DATA + ORDER:
+    case SET_DATA_ORDER:
       return {
         ...state,
         name: payload.name,
@@ -31,7 +39,7 @@ export const order = (state = initialState, {type, payload} = {}) => {
         loading: false,
         message: null,
       }
-    case SET + ERROR + ORDER:
+    case SET_ERROR_ORDER:
       return {
         ...state,
         name: null,
@@ -40,7 +48,7 @@ export const order = (state = initialState, {type, payload} = {}) => {
         loading: false,
         message: payload,
       }
-    case SET + TOTAL + ORDER:
+    case SET_TOTAL_ORDER:
       return {
         ...state,
         total: calcTotal(payload)

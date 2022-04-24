@@ -1,4 +1,4 @@
-import {POPUP, SET, UNSET} from "../../utils/constants";
+import {SET_POPUP, UNSET_POPUP} from "../actions/popup";
 
 export const initialState = {
   show: false,
@@ -7,14 +7,14 @@ export const initialState = {
 
 export const popup = (state = initialState, {type, payload} = {}) => {
   switch (type) {
-    case SET + POPUP: {
+    case SET_POPUP: {
       return {
         ...state,
         show: true,
         type: payload,
       }
     }
-    case UNSET + POPUP: {
+    case UNSET_POPUP: {
       return {
         ...state,
         ...initialState
