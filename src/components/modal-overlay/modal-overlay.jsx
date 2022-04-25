@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default function ModalOverlay(props) {
   const {popupHandler} = props
   return (
-    <div onClick={() => popupHandler(false)} className={styles.overlay} />
+    <div onClick={popupHandler} className={styles.overlay} />
   )
 }
 

@@ -1,96 +1,92 @@
-import React, {useContext} from "react";
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import PropTypes from "prop-types";
-import {OrderContext} from "../../services/order-context";
-import api from "../../api/api";
-import {DATA, ERROR, LOADING, ORDER, SET} from "../../utils/constants";
+import {makeOrder, setTotalOrder} from "../../services/actions/order";
+import {addIngredient, setBun} from "../../services/actions/burger";
+import {useDrop} from "react-dnd";
+import {BUN} from "../../utils/constants";
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
-export default function BurgerConstructor(props) {
-  const {popupHandler} = props;
-  const {orderState, orderDispatcher} = useContext(OrderContext)
+export default function BurgerConstructor() {
+  const dispatch = useDispatch()
+  const order = useSelector(({order}) => order)
+  const burger = useSelector(({burger}) => burger)
 
-  const makeOrder = () => {
-    if (api) {
-      orderDispatcher({type: SET + LOADING + ORDER});
-      (async () => {
-        await api.doAsyncPostRequest(
-          'orders',
-          {
-            ingredients: [orderState.burger.bun, ...orderState.burger.ingredients].map(i => i._id)
-          },
-          (data) => {
-            if (data.success) {
-              orderDispatcher({type: SET + DATA + ORDER, payload: data})
-              popupHandler(true);
-            } else {
-              orderDispatcher({type: SET + ERROR + ORDER, payload: 'Ошибка: ' + data.message})
-            }
-          },
-          (err) => {
-            orderDispatcher({type: SET + ERROR + ORDER, payload: err.message})
-          }
-        );
-      })();
-    }
+  const handleMakeOrder = () => {
+    dispatch(makeOrder([burger.bun, ...burger.ingredients].map(i => i._id)))
   }
 
-  return orderState.burger && (
-    <section className={`${styles.section} pt-25`}>
-      <div className="pr-6">
-        {
-          orderState.burger.bun &&
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${orderState.burger.bun.name} (верх)`}
-            price={orderState.burger.bun.price}
-            thumbnail={orderState.burger.bun.image}
-          />
-        }
-      </div>
-      <ul className={`${styles.list} pl-4 pr-4`}>
-        {
-          orderState.burger.ingredients.map((ingredient, index) =>
-            (
-              <li key={`${ingredient._id}${index}`} className={styles.item}>
-                <DragIcon  type={"primary"}/>
-                <ConstructorElement
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
-                />
-              </li>
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredients",
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    }),
+    drop(dragObj) {
+      if (dragObj.ingredient.type === BUN.key) {
+        dispatch(setBun(dragObj.ingredient))
+      } else {
+        dispatch(addIngredient(0, dragObj.ingredient))
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (burger.bun) {
+      dispatch(setTotalOrder([burger.bun, ...burger.ingredients]))
+    } else {
+      dispatch(setTotalOrder([...burger.ingredients]))
+    }
+  }, [dispatch, burger])
+  return (
+    <section className={`${styles.section} pt-20`}>
+      <div ref={dropTarget} className={`${styles.dropArea} ${isHover && styles.droppable} pt-5 pb-5`}>
+        <div className="pr-6">
+          {
+            burger.bun ? (
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${burger.bun.name} (верх)`}
+              price={burger.bun.price}
+              thumbnail={burger.bun.image}
+            />) : (
+              <p className="text text_type_main-large pt-3">Пожалуйста, перенесите сюда булку для создания заказа</p>
             )
-          )
-        }
-      </ul>
-      <div className="pr-6">
-        {
-          orderState.burger.bun &&
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${orderState.burger.bun.name} (низ)`}
-            price={orderState.burger.bun.price}
-            thumbnail={orderState.burger.bun.image}
-          />
-        }
+          }
+        </div>
+        <ul className={`${styles.list} pl-4 pr-4`}>
+          {
+            burger.ingredients.map((ingredient, index) =>
+              (
+                  <BurgerConstructorItem key={ingredient.uuid} index={index} ingredient={ingredient} />
+              )
+            )
+          }
+        </ul>
+        <div className="pr-6">
+          {
+            burger.bun &&
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${burger.bun.name} (низ)`}
+              price={burger.bun.price}
+              thumbnail={burger.bun.image}
+            />
+          }
+        </div>
       </div>
-      <div className={`${styles.button_container} pt-6 pr-6`}>
+      <div className={`${styles.button_container} pr-6`}>
         <div className='mr-10'>
-          <span className="text text_type_digits-medium mr-2">{orderState.total}</span>
+          <span className="text text_type_digits-medium mr-2">{order.total}</span>
           <CurrencyIcon type="primary" />
         </div>
         {
-          orderState.total > 0 &&
-          <Button onClick={makeOrder} className="pt-10" type="primary" size="medium">Оформить заказ</Button>
+          burger && burger.bun &&
+          <Button onClick={handleMakeOrder} className="pt-10" type="primary" size="medium">Оформить заказ</Button>
         }
       </div>
     </section>
   )
 }
-
-BurgerConstructor.propTypes = {
-  popupHandler: PropTypes.func.isRequired,
-};

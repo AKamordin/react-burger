@@ -1,16 +1,15 @@
-import React from "react";
-import styles from './app-header.module.css';
-import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import {useLocation} from "react-router-dom";
-import AppHeaderNavLink from "../app-header-nav-link/app-header-nav-link";
-import {APP_PATH} from "../../utils/constants";
+import React from "react"
+import styles from './app-header.module.css'
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import {useLocation} from "react-router-dom"
+import AppHeaderNavLink from "../app-header-nav-link/app-header-nav-link"
+import {APP_PATH} from "../../utils/constants"
 
 export default function AppHeader() {
-  const location = useLocation();
-  console.log(location.pathname);
-  const isConstructor = location.pathname === `${APP_PATH}/`;
-  const isOrders = location.pathname === `${APP_PATH}/orders`;
-  const isProfile = location.pathname === `${APP_PATH}/profile`;
+  const location = useLocation()
+  const isConstructor = location.pathname === `${APP_PATH}${location.pathname.lastIndexOf("/") > 0 ? '/' : ''}`
+  const isOrders = location.pathname === `${APP_PATH}/orders`
+  const isProfile = location.pathname === `${APP_PATH}/profile`
   return (
     <header className={`${styles.header}`}>
       <nav className={`${styles.header__container}`}>
@@ -32,5 +31,5 @@ export default function AppHeader() {
         </AppHeaderNavLink>
       </nav>
     </header>
-  );
+  )
 }

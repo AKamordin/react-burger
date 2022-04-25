@@ -1,21 +1,33 @@
-import React, {useContext} from "react";
+import React from "react";
 import styles from './burger-ingredient-item.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
-import {SelectedIngredientContext} from "../../services/selected-ingredient-context";
+import {useDispatch} from "react-redux";
+import {setPopup} from "../../services/actions/popup";
+import {INGREDIENTS} from "../../utils/constants";
+import {setSelectedIngredients} from "../../services/actions/ingredients";
+import {useDrag} from "react-dnd";
 
 export default function BurgerIngredientItem(props) {
-  const {ingredient, count, popupHandler} = props;
-  const {setSelectedIngredient} = useContext(SelectedIngredientContext)
+  const {ingredient, count} = props;
+  const dispatch = useDispatch();
 
   const handleIngredientClick = () => {
-    setSelectedIngredient(ingredient)
-    popupHandler(true)
+    dispatch(setSelectedIngredients(ingredient))
+    dispatch(setPopup(INGREDIENTS))
   }
 
+  const [{ isDrag }, dragRef] = useDrag({
+    type: "ingredients",
+    item: { ingredient },
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
+
   return (
-    <article onClick={handleIngredientClick} className={styles.item}>
+    <article ref={dragRef} onClick={handleIngredientClick} className={`${styles.item} ${isDrag && styles.dragging}`}>
       {
         count > 0 &&
         <Counter count={count} size="default" />
@@ -33,5 +45,4 @@ export default function BurgerIngredientItem(props) {
 BurgerIngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
   count: PropTypes.number,
-  popupHandler: PropTypes.func.isRequired,
 };

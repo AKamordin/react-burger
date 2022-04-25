@@ -6,14 +6,17 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
 
 export default function Modal(props) {
-  const {title, popupHandler, onEscKeydown, children} = props;
+  const {title, onClose, children} = props;
 
   useEffect(() => {
-    document.addEventListener('keydown', onEscKeydown);
+    const handleEscKeydown = (event) => {
+      event.key === "Escape" && onClose();
+    }
+    document.addEventListener('keydown', handleEscKeydown);
     return () => {
-      document.removeEventListener('keydown', onEscKeydown);
+      document.removeEventListener('keydown', handleEscKeydown);
     };
-  }, [onEscKeydown]);
+  }, [onClose]);
 
   return createPortal(
     <>
@@ -23,7 +26,7 @@ export default function Modal(props) {
             title &&
             <h2 className={`${styles.title} text text_type_main-large`}>{title}</h2>
           }
-          <button onClick={() => popupHandler(false)} className={styles.closeButton}>
+          <button onClick={onClose} className={styles.closeButton}>
             <CloseIcon type="primary" />
           </button>
         </header>
@@ -31,7 +34,7 @@ export default function Modal(props) {
           children
         }
       </section>
-      <ModalOverlay popupHandler={popupHandler} />
+      <ModalOverlay popupHandler={onClose} />
     </>,
     document.querySelector('#modals')
   )
@@ -39,7 +42,6 @@ export default function Modal(props) {
 
 Modal.propTypes = {
   title: PropTypes.string,
-  popupHandler: PropTypes.func.isRequired,
-  onEscKeydown: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 };

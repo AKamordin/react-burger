@@ -6,11 +6,11 @@ import PropTypes from "prop-types";
 export default function AppHeaderNavLink(props) {
   const {to, text, active, profile} = props;
   return (
-    <NavLink to={to} className={`${styles.header__link} pl-5 pr-5 pt-4 pb-4 ${profile ? styles.header__profile : ''}`}>
+    <NavLink to={to} className={`${styles.header__link} pl-5 pr-5 pt-4 pb-4 ${profile && styles.header__profile}`}>
       {
         props.children
       }
-      <span className={`text text_type_main-default ml-2 ${active ? '' : 'text_color_inactive'}`}>{text}</span>
+      <span className={`text text_type_main-default ml-2 ${!active && 'text_color_inactive'}`}>{text}</span>
     </NavLink>
   )
 }
