@@ -1,4 +1,5 @@
 import {DATA, INIT, BURGER, INGREDIENT, SET, ADD, DELETE, SORT} from "../../utils/constants";
+import { v4 as getUUID } from "uuid";
 
 export const INIT_DATA_BURGER = INIT + DATA + BURGER
 export const SET_INGREDIENT_BURGER = SET + INGREDIENT + BURGER
@@ -19,12 +20,14 @@ export const setBun = (ingredient) => (
   }
 )
 
-export const addIngredient = (index, ingredient) => (
-  {
+export const addIngredient = (index, ingredient) => {
+  const uuid = getUUID();
+  return {
     type: ADD_INGREDIENT_BURGER,
-    payload: {index: index, ingredient: ingredient},
+      payload: {index: index, ingredient: ingredient, uuid: uuid},
   }
-)
+
+}
 
 export const deleteIngredient = (index) => (
   {

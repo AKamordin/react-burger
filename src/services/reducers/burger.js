@@ -5,7 +5,6 @@ import {
   SET_INGREDIENT_BURGER,
   SORT_INGREDIENT_BURGER
 } from "../actions/burger";
-import { v4 as getUUID } from "uuid";
 
 const initialState = {
   bun: null,
@@ -27,7 +26,7 @@ export const burger = (state = initialState, {type, payload} = {}) => {
     case ADD_INGREDIENT_BURGER:
       return {
         ...state,
-        ingredients: [...state.ingredients.slice(0, payload.index), {...payload.ingredient, uuid: getUUID()}, ...state.ingredients.slice(payload.index)],
+        ingredients: [...state.ingredients.slice(0, payload.index), {...payload.ingredient, uuid: payload.uuid}, ...state.ingredients.slice(payload.index)],
       }
     case DELETE_INGREDIENT_BURGER:
       return {
