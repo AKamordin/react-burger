@@ -5,36 +5,25 @@ class Api {
     this._baseUrl = config.baseUrl;
   }
 
-  async doAsyncGetRequest(url, onSuccess = (f) => f, onError = (f) => f) {
-    try {
-      const res = await fetch(`${this._baseUrl}/${url}`, this._getDefaultConfig())
-      this._handleError(res)
-      const json = await res.json()
-      return onSuccess(json)
-    } catch (err) {
-      console.log(err.message)
-      onError(err)
-    }
+  async doAsyncGetRequest(url) {
+    const res = await fetch(`${this._baseUrl}/${url}`, this._getDefaultConfig())
+    this._handleError(res)
+    return await res.json()
   }
 
-  async doAsyncPostRequest(url, data, onSuccess = (f) => f, onError = (f) => f) {
-    try {
-      const res = await fetch(`${this._baseUrl}/${url}`, {
-        ...this._getDefaultConfig(),
-        method: 'POST',
-        body: JSON.stringify(data)
-      })
-      this._handleError(res)
-      const json = await res.json()
-      return onSuccess(json)
-    } catch (err) {
-      console.log(err.message)
-      onError(err)
-    }
+  async doAsyncPostRequest(url, data) {
+    const res = await fetch(`${this._baseUrl}/${url}`, {
+      ...this._getDefaultConfig(),
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    this._handleError(res)
+    return await res.json()
   }
 
   _handleError(res) {
     if (!res.ok) {
+      console.log(res)
       const text = res.statusText ? res.statusText : res.url;
       const message = `Ошибка: ${res.status} - ${text}`;
       throw new Error(message);
