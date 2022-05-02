@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
 import styles from './constructor-page.module.css'
 import pagesStyles from '../pages.module.css';
 import BurgerIngredients from "../../burger-ingredients/burger-ingredients";
@@ -7,46 +6,38 @@ import BurgerConstructor from "../../burger-constructor/burger-constructor";
 import Modal from "../../modal/modal";
 import OrderDetails from "../../order-details/order-details";
 import BurgerIngredientDetails from "../../burger-ingredient-details/burger-ingredient-details";
-import {getIngredients} from "../../../services/actions/ingredients";
-import {unsetPopup} from "../../../services/actions/popup";
 import {INGREDIENTS, ORDER} from "../../../utils/constants";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {Loader} from "../../loader/loader";
-import {initDataOrder} from "../../../services/actions/order";
-import {initBurger} from "../../../services/actions/burger";
+import {observer} from "mobx-react";
+import {useStore} from "../../../store";
 
-
-export default function ConstructorPage() {
-  const dispatch = useDispatch()
-  const ingredients = useSelector(({ingredients}) => ingredients.ingredients)
-  const selected = useSelector(({ingredients}) => ingredients.selected)
-  const order = useSelector(({order}) => order)
-  const popup = useSelector(({popup}) => popup)
+function ConstructorPage() {
+  const {ingredientsStore, popupStore, orderStore, burgerStore} = useStore()
+  const {data, error, selected} = ingredientsStore
+  const {show, type} = popupStore
+  const {error: orderError, loading: orderLoading} = orderStore
 
   const handleIngredientPopupClose = () => {
-    dispatch(unsetPopup())
+    popupStore.unsetPopup()
   }
 
   const handleOrderPopupClose = () => {
-    dispatch(unsetPopup())
-    dispatch(initDataOrder())
-    dispatch(initBurger())
+    popupStore.unsetPopup()
+    orderStore.initOrder()
+    burgerStore.initBurger()
   }
-
-  useEffect( () => {
-    dispatch(getIngredients())
-  }, [dispatch])
 
   return (
     <>
       {
-        ingredients.data && ingredients.data.length > 0 && !order.error &&
+        data && data.length > 0 && !orderError &&
         <main className={styles.constructor}>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />
             {
-              order.loading ? (
+              orderLoading ? (
               <Loader size="large" />
               ) : (
                 <BurgerConstructor />
@@ -56,27 +47,27 @@ export default function ConstructorPage() {
         </main>
       }
       {
-        ingredients.error &&
+        error &&
         <main className={pagesStyles.error}>
           <p className={`text text_type_main-medium text_color_inactive`}>{'Что-то пошло не так :('}</p>
-          <p className={`text text_type_main-medium text_color_inactive`}>{ingredients.message}</p>
+          <p className={`text text_type_main-medium text_color_inactive`}>{error}</p>
         </main>
       }
       {
-        order.error &&
+        orderError &&
         <main className={pagesStyles.error}>
           <p className={`text text_type_main-medium text_color_inactive`}>{'Что-то пошло не так :('}</p>
-          <p className={`text text_type_main-medium text_color_inactive`}>{order.message}</p>
+          <p className={`text text_type_main-medium text_color_inactive`}>{orderError}</p>
         </main>
       }
       {
-        popup.show && popup.type === ORDER &&
+        show && type === ORDER &&
           <Modal onClose={handleOrderPopupClose}>
             <OrderDetails onClose={handleOrderPopupClose} />
           </Modal>
       }
       {
-        popup.show && popup.type === INGREDIENTS &&
+        show && type === INGREDIENTS &&
         <Modal title={'Детали ингредиентов'} onClose={handleIngredientPopupClose}>
           <BurgerIngredientDetails ingredient={selected} />
         </Modal>
@@ -84,3 +75,5 @@ export default function ConstructorPage() {
     </>
   )
 }
+
+export default observer(ConstructorPage)

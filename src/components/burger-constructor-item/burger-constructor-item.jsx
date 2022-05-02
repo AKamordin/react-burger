@@ -1,19 +1,19 @@
 import React, {useRef} from "react";
 import styles from "./burger-constructor-item.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {deleteIngredient, sortIngredient} from "../../services/actions/burger";
-import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import {ingredientType} from "../../utils/types";
 import PropTypes from "prop-types";
+import {useStore} from "../../store";
+import {observer} from "mobx-react";
 
-export default function BurgerConstructorItem(props) {
+function BurgerConstructorItem(props) {
   const {ingredient, index} = props
-  const dispatch = useDispatch()
+  const {burgerStore} = useStore()
   const ref = useRef()
 
   const handleDelete = (index) => {
-    dispatch(deleteIngredient(index))
+    burgerStore.deleteIngredient(index)
   }
   const [{ isDragging }, dragRef] = useDrag({
     type: "draggable-ingredient",
@@ -32,7 +32,7 @@ export default function BurgerConstructorItem(props) {
       if (dragObject.index === index) {
         return
       }
-      dispatch(sortIngredient(dragObject.index, index))
+      burgerStore.sortIngredient(dragObject.index, index)
     }
   })
 
@@ -50,6 +50,8 @@ export default function BurgerConstructorItem(props) {
     </li>
   )
 }
+
+export default observer(BurgerConstructorItem)
 
 BurgerConstructorItem.propTypes = {
   ingredient: ingredientType.isRequired,

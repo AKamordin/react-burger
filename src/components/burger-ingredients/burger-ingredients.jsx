@@ -3,11 +3,13 @@ import styles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {BUN, INGREDIENT_GROUPS, MAIN, SAUCE} from "../../utils/constants";
 import BurgerIngredientGroup from "../burger-ingredient-group/burger-ingredient-group";
-import {useSelector} from "react-redux";
 import {useInView} from "../../hooks/use-in-view";
+import {useStore} from "../../store";
+import {observer} from "mobx-react";
 
-export default function BurgerIngredients() {
-  const ingredients = useSelector(({ingredients}) => ingredients.ingredients)
+function BurgerIngredients() {
+  const {ingredientsStore} = useStore()
+  const {data} = ingredientsStore
   const [tab, setTab] = useState(BUN)
   const bunRef = useRef();
   const sauceRef = useRef();
@@ -49,19 +51,19 @@ export default function BurgerIngredients() {
       <ul className={`${styles.list} mt-10`}>
         <li ref={bunRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.data.filter(i => i.type === BUN.key)}
+            ingredients={data.filter(i => i.type === BUN.key)}
             title={BUN.value}
           />
         </li>
         <li ref={sauceRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.data.filter(i => i.type === SAUCE.key)}
+            ingredients={data.filter(i => i.type === SAUCE.key)}
             title={SAUCE.value}
           />
         </li>
         <li ref={mainRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.data.filter(i => i.type === MAIN.key)}
+            ingredients={data.filter(i => i.type === MAIN.key)}
             title={MAIN.value}
           />
         </li>
@@ -69,3 +71,5 @@ export default function BurgerIngredients() {
     </section>
   )
 }
+
+export default observer(BurgerIngredients)

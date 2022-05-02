@@ -1,21 +1,20 @@
 import React from "react";
 import styles from './burger-ingredient-item.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
-import {useDispatch} from "react-redux";
-import {setPopup} from "../../services/actions/popup";
 import {INGREDIENTS} from "../../utils/constants";
-import {setSelectedIngredients} from "../../services/actions/ingredients";
 import {useDrag} from "react-dnd";
+import {useStore} from "../../store";
+import PropTypes from "prop-types";
+import {observer} from "mobx-react";
 
-export default function BurgerIngredientItem(props) {
+function BurgerIngredientItem(props) {
   const {ingredient, count} = props;
-  const dispatch = useDispatch();
+  const {ingredientsStore, popupStore} = useStore()
 
   const handleIngredientClick = () => {
-    dispatch(setSelectedIngredients(ingredient))
-    dispatch(setPopup(INGREDIENTS))
+    ingredientsStore.setSelectedIngredient(ingredient)
+    popupStore.setPopup(INGREDIENTS)
   }
 
   const [{ isDrag }, dragRef] = useDrag({
@@ -41,6 +40,8 @@ export default function BurgerIngredientItem(props) {
     </article>
   )
 }
+
+export default observer(BurgerIngredientItem)
 
 BurgerIngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
