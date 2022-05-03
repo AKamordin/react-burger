@@ -1,7 +1,7 @@
 import {action, makeObservable, observable} from "mobx"
 import api from "../api/api"
 import {makeLoggable} from "mobx-log";
-import {statusCooking} from "../utils/constants";
+import {ORDER, statusCooking} from "../utils/constants";
 
 export default class Order {
   name = null
@@ -21,10 +21,24 @@ export default class Order {
       loading : observable,
       error : observable,
       makeOrder: action,
+      makeSuccess: action,
+      makeError: action,
       initOrder: action,
       setTotal: action,
     })
     makeLoggable(this)
+  }
+
+  makeSuccess = data => {
+    this.name = data.name
+    this.number = data.order.number
+    this.error = null
+    this.loading = false
+  }
+
+  makeError = (message) => {
+    this.error = message
+    this.loading = false
   }
 
   makeOrder = async (ids) => {
@@ -36,18 +50,14 @@ export default class Order {
       },
       (data) => {
         if (data.success) {
-          this.name = data.name
-          this.number = data.order.number
-          this.error = null
-          this.loading = false
+          this.makeSuccess(data)
+          this.store.popupStore.setPopup(ORDER)
         } else {
-          this.error = data.message
-          this.loading = false
+          this.makeError(data.message)
         }
       },
       (err) => {
-        this.error = err.message
-        this.loading = false
+        this.makeError(err.message)
       }
     )
   }

@@ -2,19 +2,19 @@ import React from "react"
 import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './burger-constructor.module.css'
 import {useDrop} from "react-dnd"
-import {BUN, ORDER} from "../../utils/constants"
+import {BUN} from "../../utils/constants"
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item"
 import {useStore} from "../../store"
 import {v4 as getUUID} from "uuid"
 import {observer} from "mobx-react";
 
 function BurgerConstructor() {
-  const {orderStore, burgerStore, popupStore} = useStore()
+  const {orderStore, burgerStore} = useStore()
   const {total} = orderStore
   const {bun, ingredients} = burgerStore
 
   const handleMakeOrder = () => {
-    orderStore.makeOrder([bun, ...ingredients].map(i => i._id)).then(() => popupStore.setPopup(ORDER))
+    orderStore.makeOrder([bun, ...ingredients].map(i => i._id)).then()
   }
 
   const [{ isHover }, dropTarget] = useDrop({

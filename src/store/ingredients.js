@@ -11,15 +11,28 @@ export default class Ingredients {
   constructor(store) {
     this.store = store
     makeObservable(this, {
-      data: observable,
+      data: observable.ref,
       loading: observable,
       error: observable,
-      selected: observable,
+      selected: observable.struct,
       getIngredients: action,
+      getSuccess: action,
+      getError: action,
       setSelectedIngredient: action
     })
     makeLoggable(this)
     runInAction(this.getIngredients)
+  }
+
+  getSuccess = data => {
+    this.data = data
+    this.error = null
+    this.loading = false
+  }
+
+  getError = (message) => {
+    this.error = message
+    this.loading = false
   }
 
   getIngredients = async () => {
@@ -28,17 +41,13 @@ export default class Ingredients {
       'ingredients',
       (data) => {
         if (data.success) {
-          this.data = data.data
-          this.error = null
-          this.loading = false
+          this.getSuccess(data.data)
         } else {
-          this.error = data.message
-          this.loading = false
+          this.getError(data.message)
         }
       },
       (err) => {
-        this.error = err.message
-        this.loading = false
+        this.getError(err.message)
       }
     )
   }

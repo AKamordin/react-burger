@@ -9,7 +9,7 @@ export default class Burger {
   constructor(store) {
     this.store = store
     makeObservable(this, {
-      bun: observable,
+      bun: observable.struct,
       ingredients: observable,
       initBurger: action,
       setBun: action,

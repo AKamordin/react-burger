@@ -8,11 +8,17 @@ class Api {
   async doAsyncGetRequest(url, onSuccess = (f) => f, onError = (f) => f) {
     try {
       const res = await fetch(`${this._baseUrl}/${url}`, this._getDefaultConfig())
-      this._handleError(res)
-      const json = await res.json()
+      let json
+      try {
+        json = await res.json()
+      } catch (err) {
+        json = null
+      }
+      if (!json) {
+        this._handleError(res)
+      }
       return onSuccess(json)
     } catch (err) {
-      console.log(err.message)
       onError(err)
     }
   }
@@ -24,11 +30,17 @@ class Api {
         method: 'POST',
         body: JSON.stringify(data)
       })
-      this._handleError(res)
-      const json = await res.json()
+      let json
+      try {
+        json = await res.json()
+      } catch (err) {
+        json = null
+      }
+      if (!json) {
+        this._handleError(res)
+      }
       return onSuccess(json)
     } catch (err) {
-      console.log(err.message)
       onError(err)
     }
   }
