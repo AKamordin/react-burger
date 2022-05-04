@@ -4,17 +4,17 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 import {useDispatch} from "react-redux";
-import {setPopup} from "../../services/actions/popup";
 import {INGREDIENTS} from "../../utils/constants";
-import {setSelectedIngredients} from "../../services/actions/ingredients";
 import {useDrag} from "react-dnd";
+import {setPopup} from "../../services/slices/popup";
+import {setSelected} from "../../services/slices/ingredients";
 
 export default function BurgerIngredientItem(props) {
   const {ingredient, count} = props;
   const dispatch = useDispatch();
 
   const handleIngredientClick = () => {
-    dispatch(setSelectedIngredients(ingredient))
+    dispatch(setSelected(ingredient))
     dispatch(setPopup(INGREDIENTS))
   }
 

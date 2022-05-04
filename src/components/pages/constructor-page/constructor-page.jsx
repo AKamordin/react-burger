@@ -7,15 +7,14 @@ import BurgerConstructor from "../../burger-constructor/burger-constructor";
 import Modal from "../../modal/modal";
 import OrderDetails from "../../order-details/order-details";
 import BurgerIngredientDetails from "../../burger-ingredient-details/burger-ingredient-details";
-import {getIngredients} from "../../../services/actions/ingredients";
-import {unsetPopup} from "../../../services/actions/popup";
 import {INGREDIENTS, ORDER} from "../../../utils/constants";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {Loader} from "../../loader/loader";
-import {initDataOrder} from "../../../services/actions/order";
-import {initBurger} from "../../../services/actions/burger";
-
+import {unsetPopup} from "../../../services/slices/popup";
+import {initBurger} from "../../../services/slices/burger";
+import {getIngredients} from "../../../services/slices/ingredients";
+import {initDataOrder} from "../../../services/slices/order";
 
 export default function ConstructorPage() {
   const dispatch = useDispatch()
@@ -59,14 +58,14 @@ export default function ConstructorPage() {
         ingredients.error &&
         <main className={pagesStyles.error}>
           <p className={`text text_type_main-medium text_color_inactive`}>{'Что-то пошло не так :('}</p>
-          <p className={`text text_type_main-medium text_color_inactive`}>{ingredients.message}</p>
+          <p className={`text text_type_main-medium text_color_inactive`}>{ingredients.error}</p>
         </main>
       }
       {
         order.error &&
         <main className={pagesStyles.error}>
           <p className={`text text_type_main-medium text_color_inactive`}>{'Что-то пошло не так :('}</p>
-          <p className={`text text_type_main-medium text_color_inactive`}>{order.message}</p>
+          <p className={`text text_type_main-medium text_color_inactive`}>{order.error}</p>
         </main>
       }
       {
