@@ -36,6 +36,6 @@ export const orderSlice = createSlice({
   },
 })
 
-export const { initDataOrder, setTotalOrder } = orderSlice.actions
+export const { initDataOrder } = orderSlice.actions
 
 export default orderSlice.reducer;
