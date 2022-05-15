@@ -24,13 +24,13 @@ export const orderSlice = createSlice({
       .addMatcher(orderAPI.endpoints.makeOrder.matchFulfilled, (state, action) => {
         state.name =  action.payload.success ? action.payload.name : null
         state.number = action.payload.success ? action.payload.order.number : null
-        state.error = action.payload.success ? null : ('Статус: ' + action.payload.originalStatus + '. ' + action.error.message)
+        state.error = action.payload.success ? null : ('Статус: ' + action.payload.status + '. ' + action.error.message)
         state.loading = false
       })
       .addMatcher(orderAPI.endpoints.makeOrder.matchRejected, (state, action) => {
         state.name =  null
         state.number = null
-        state.error = 'Статус: ' + action.payload.originalStatus + '. ' + action.error.message
+        state.error = action.payload.data.message ? 'Статус: ' + action.payload.status + '. ' + action.payload.data.message : 'Статус: ' + action.payload.originalStatus + '. ' + action.error.message
         state.loading = false
       })
   },
