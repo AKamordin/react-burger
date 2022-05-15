@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from './constructor-page.module.css'
 import pagesStyles from '../pages.module.css';
@@ -13,15 +13,26 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 import {Loader} from "../../loader/loader";
 import {unsetPopup} from "../../../services/slices/popup";
 import {initBurger} from "../../../services/slices/burger";
-import {getIngredients} from "../../../services/slices/ingredients";
 import {initDataOrder} from "../../../services/slices/order";
+import {ingredientsAPI} from "../../../services/api/ingredients";
+import {
+  errorIngredientsSelector,
+  loadingIngredientsSelector,
+  selectedIngredientSelector
+} from "../../../services/selectors/ingredients";
+import {errorOrderSelector, loadingOrderSelector} from "../../../services/selectors/order";
+import {showPopupSelector, typePopupSelector} from "../../../services/selectors/popup";
 
 export default function ConstructorPage() {
   const dispatch = useDispatch()
-  const ingredients = useSelector(({ingredients}) => ingredients.ingredients)
-  const selected = useSelector(({ingredients}) => ingredients.selected)
-  const order = useSelector(({order}) => order)
-  const popup = useSelector(({popup}) => popup)
+  const {data: ingredients} =  ingredientsAPI.useGetIngredientsQuery();
+  const ingredientsError = useSelector(errorIngredientsSelector)
+  const ingredientsLoading = useSelector(loadingIngredientsSelector)
+  const selected = useSelector(selectedIngredientSelector)
+  const orderError = useSelector(errorOrderSelector)
+  const orderLoading = useSelector(loadingOrderSelector)
+  const popupShow = useSelector(showPopupSelector)
+  const popupType = useSelector(typePopupSelector)
 
   const handleIngredientPopupClose = () => {
     dispatch(unsetPopup())
@@ -33,19 +44,19 @@ export default function ConstructorPage() {
     dispatch(initBurger())
   }
 
-  useEffect( () => {
-    dispatch(getIngredients())
-  }, [dispatch])
+  if (ingredientsLoading) {
+    return <Loader size="large" />
+  }
 
   return (
     <>
       {
-        ingredients.data && ingredients.data.length > 0 && !order.error &&
+        ingredients?.data && ingredients?.data.length > 0 && !orderError &&
         <main className={styles.constructor}>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />
             {
-              order.loading ? (
+              orderLoading ? (
               <Loader size="large" />
               ) : (
                 <BurgerConstructor />
@@ -55,27 +66,27 @@ export default function ConstructorPage() {
         </main>
       }
       {
-        ingredients.error &&
+        ingredientsError &&
         <main className={pagesStyles.error}>
           <p className={`text text_type_main-medium text_color_inactive`}>{'Что-то пошло не так :('}</p>
-          <p className={`text text_type_main-medium text_color_inactive`}>{ingredients.error}</p>
+          <p className={`text text_type_main-medium text_color_inactive`}>{ingredientsError}</p>
         </main>
       }
       {
-        order.error &&
+        orderError &&
         <main className={pagesStyles.error}>
           <p className={`text text_type_main-medium text_color_inactive`}>{'Что-то пошло не так :('}</p>
-          <p className={`text text_type_main-medium text_color_inactive`}>{order.error}</p>
+          <p className={`text text_type_main-medium text_color_inactive`}>{orderError}</p>
         </main>
       }
       {
-        popup.show && popup.type === ORDER &&
+        popupShow && popupType === ORDER &&
           <Modal onClose={handleOrderPopupClose}>
             <OrderDetails onClose={handleOrderPopupClose} />
           </Modal>
       }
       {
-        popup.show && popup.type === INGREDIENTS &&
+        popupShow && popupType === INGREDIENTS &&
         <Modal title={'Детали ингредиентов'} onClose={handleIngredientPopupClose}>
           <BurgerIngredientDetails ingredient={selected} />
         </Modal>

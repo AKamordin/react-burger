@@ -5,15 +5,17 @@ import {ingredientType} from "../../utils/types";
 import BurgerIngredientItem from "../burger-ingredient-item/burger-ingredient-item";
 import {BUN} from "../../utils/constants";
 import {useSelector} from "react-redux";
+import {bunBurgerSelector, ingredientsBurgerSelector} from "../../services/selectors/burger";
 
 export default function BurgerIngredientGroup(props) {
   const {title, ingredients} = props;
-  const burger = useSelector(({burger}) => burger)
-  function calcCount(burger, ingredient) {
+  const burgerBun = useSelector(bunBurgerSelector)
+  const burgerIngredients = useSelector(ingredientsBurgerSelector)
+  function calcCount(ingredient) {
     if (ingredient.type === BUN.key) {
-      return burger.bun && burger.bun._id === ingredient._id ? 1 : null
+      return burgerBun && burgerBun._id === ingredient._id ? 1 : null
     } else {
-      return burger.ingredients.filter(t => t._id === ingredient._id).length
+      return burgerIngredients.filter(t => t._id === ingredient._id).length
     }
   }
   return (
@@ -26,7 +28,7 @@ export default function BurgerIngredientGroup(props) {
               <li key={ingredient._id}>
                 <BurgerIngredientItem
                   ingredient={ingredient}
-                  count={calcCount(burger, ingredient)}
+                  count={calcCount(ingredient)}
                 />
               </li>
             ))

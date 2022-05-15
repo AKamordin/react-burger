@@ -3,11 +3,18 @@ import styles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {BUN, INGREDIENT_GROUPS, MAIN, SAUCE} from "../../utils/constants";
 import BurgerIngredientGroup from "../burger-ingredient-group/burger-ingredient-group";
-import {useSelector} from "react-redux";
 import {useInView} from "../../hooks/use-in-view";
+import {useSelector} from "react-redux";
+import {
+  bunIngredientsSelector,
+  mainIngredientsSelector,
+  sauceIngredientsSelector
+} from "../../services/selectors/ingredients";
 
 export default function BurgerIngredients() {
-  const ingredients = useSelector(({ingredients}) => ingredients.ingredients)
+  const bunIngredients = useSelector(bunIngredientsSelector)
+  const sauceIngredients = useSelector(sauceIngredientsSelector)
+  const mainIngredients = useSelector(mainIngredientsSelector)
   const [tab, setTab] = useState(BUN)
   const bunRef = useRef();
   const sauceRef = useRef();
@@ -49,19 +56,19 @@ export default function BurgerIngredients() {
       <ul className={`${styles.list} mt-10`}>
         <li ref={bunRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.data.filter(i => i.type === BUN.key)}
+            ingredients={bunIngredients}
             title={BUN.value}
           />
         </li>
         <li ref={sauceRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.data.filter(i => i.type === SAUCE.key)}
+            ingredients={sauceIngredients}
             title={SAUCE.value}
           />
         </li>
         <li ref={mainRef}>
           <BurgerIngredientGroup
-            ingredients={ingredients.data.filter(i => i.type === MAIN.key)}
+            ingredients={mainIngredients}
             title={MAIN.value}
           />
         </li>

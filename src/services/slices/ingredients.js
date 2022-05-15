@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import api from "../../api/api";
+import {createSlice} from "@reduxjs/toolkit";
+import {ingredientsAPI} from "../api/ingredients";
 
 const initialState = {
   ingredients: {
@@ -9,17 +9,6 @@ const initialState = {
   },
   selected: null,
 }
-
-export const getIngredients = createAsyncThunk(
-  'ingredients/get',
-  async () => {
-    const response = await api.doAsyncGetRequest('ingredients')
-    if (!response.success) {
-      throw new Error(response.message)
-    }
-    return response.data
-  }
-)
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
@@ -31,18 +20,18 @@ export const ingredientsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getIngredients.pending, (state) => {
+      .addMatcher(ingredientsAPI.endpoints.getIngredients.matchPending, (state) => {
         state.ingredients.loading = true
       })
-      .addCase(getIngredients.fulfilled, (state, action) => {
-        state.ingredients.data = action.payload
+      .addMatcher(ingredientsAPI.endpoints.getIngredients.matchFulfilled, (state, action) => {
+        state.ingredients.data = action.payload.success ? action.payload.data : []
         state.ingredients.loading = false
-        state.ingredients.error = null
+        state.ingredients.error = action.payload.success ? null : ('Статус: ' + action.payload.originalStatus + '. ' + action.error.message)
       })
-      .addCase(getIngredients.rejected, (state, action) => {
+      .addMatcher(ingredientsAPI.endpoints.getIngredients.matchRejected, (state, action) => {
         state.ingredients.data = []
         state.ingredients.loading = false
-        state.ingredients.error = action.error.message
+        state.ingredients.error = 'Статус: ' + action.payload.originalStatus + '. ' + action.error.message
       })
   },
 })
