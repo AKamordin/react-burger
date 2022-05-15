@@ -7,7 +7,6 @@ export default class Order {
   name = null
   number = null
   status = statusCooking
-  total = 0
   loading = false
   error = null
 
@@ -17,14 +16,12 @@ export default class Order {
       name: observable,
       number: observable,
       status: observable,
-      total: observable,
       loading : observable,
       error : observable,
       makeOrder: action,
       makeSuccess: action,
       makeError: action,
       initOrder: action,
-      setTotal: action,
     })
     makeLoggable(this)
   }
@@ -66,13 +63,8 @@ export default class Order {
     this.name = null
     this.number = null
     this.status = statusCooking
-    this.total = 0
     this.loading = false
     this.error = null
-  }
-
-  setTotal = total => {
-    this.total = total
   }
 
 }

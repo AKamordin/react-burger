@@ -1,4 +1,4 @@
-import {action, autorun, makeObservable, observable} from "mobx";
+import {action, computed, makeObservable, observable} from "mobx";
 import {makeLoggable} from "mobx-log";
 import {BUN} from "../utils/constants";
 
@@ -11,30 +11,18 @@ export default class Burger {
     makeObservable(this, {
       bun: observable.struct,
       ingredients: observable,
+      total: computed,
       initBurger: action,
       setBun: action,
       addIngredient: action,
       deleteIngredient: action,
       sortIngredient: action,
     })
-    autorun(this.calcTotal)
     makeLoggable(this)
   }
 
-  calcTotal = () => {
-    let total
-    let items
-    if (this.bun) {
-      items = [this.bun, ...this.ingredients]
-    } else {
-      items = [...this.ingredients]
-    }
-    if (!items) {
-      total = 0
-    } else {
-      total = items.reduce((acc, cur) => acc + (cur.type === BUN.key ? 2 : 1) * cur.price, 0)
-    }
-    this.store.orderStore.setTotal(total)
+  get total() {
+    return (this.bun ? [this.bun, ...this.ingredients] : [...this.ingredients]).reduce((acc, cur) => acc + (cur.type === BUN.key ? 2 : 1) * cur.price, 0)
   }
 
   initBurger = () => {

@@ -10,8 +10,7 @@ import {observer} from "mobx-react";
 
 function BurgerConstructor() {
   const {orderStore, burgerStore} = useStore()
-  const {total} = orderStore
-  const {bun, ingredients} = burgerStore
+  const {bun, ingredients, total} = burgerStore
 
   const handleMakeOrder = () => {
     orderStore.makeOrder([bun, ...ingredients].map(i => i._id)).then()
