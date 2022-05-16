@@ -1,6 +1,6 @@
-import {flow, types} from "mobx-state-tree";
+import {flow, getRoot, types} from "mobx-state-tree";
 import api from "../api/api";
-import {statusCooking} from "../utils/constants";
+import {ORDER, statusCooking} from "../utils/constants";
 
 export const OrderStatus = types.model('OrderStatus', {
   key: types.maybe(types.string),
@@ -32,14 +32,14 @@ const Order = types.model('Order', {
         (data) => {
           if (data.success) {
             self.makeSuccess(data)
+            const root = getRoot(self)
+            root.popupStore.setPopup(ORDER)
           } else {
             self.makeError(data.message)
-            throw new Error(data.message)
           }
         },
         (err) => {
           self.makeError(err.message)
-          throw new Error(err.message)
         }
       )
     }),
