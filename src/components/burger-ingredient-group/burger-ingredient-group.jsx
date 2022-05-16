@@ -3,9 +3,9 @@ import styles from './burger-ingredient-group.module.css';
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 import BurgerIngredientItem from "../burger-ingredient-item/burger-ingredient-item";
-import {useStore} from "../../store";
 import {BUN} from "../../utils/constants";
 import {observer} from "mobx-react";
+import useStore from "../../hooks/useStore";
 
 function BurgerIngredientGroup(props) {
   const {title, ingredients} = props;

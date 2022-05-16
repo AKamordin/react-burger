@@ -4,9 +4,9 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import {ingredientType} from "../../utils/types";
 import {INGREDIENTS} from "../../utils/constants";
 import {useDrag} from "react-dnd";
-import {useStore} from "../../store";
 import PropTypes from "prop-types";
 import {observer} from "mobx-react";
+import useStore from "../../hooks/useStore";
 
 function BurgerIngredientItem(props) {
   const {ingredient, count} = props;

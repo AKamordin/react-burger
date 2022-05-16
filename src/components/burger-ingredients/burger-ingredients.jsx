@@ -4,8 +4,8 @@ import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {BUN, INGREDIENT_GROUPS, MAIN, SAUCE} from "../../utils/constants";
 import BurgerIngredientGroup from "../burger-ingredient-group/burger-ingredient-group";
 import {useInView} from "../../hooks/use-in-view";
-import {useStore} from "../../store";
 import {observer} from "mobx-react";
+import useStore from "../../hooks/useStore";
 
 function BurgerIngredients() {
   const {ingredientsStore} = useStore()

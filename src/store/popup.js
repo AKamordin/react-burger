@@ -1,30 +1,19 @@
-import {action, makeObservable, observable} from "mobx";
-import {makeLoggable} from "mobx-log";
+import {types} from "mobx-state-tree";
 
-export default class Popup {
-  type = ''
-  show = false
-
-  constructor(store) {
-    this.store = store
-    makeObservable(this, {
-      type: observable,
-      show: observable,
-      setPopup: action,
-      unsetPopup: action
-    })
-    makeLoggable(this)
+const Popup = types.model('Popup', {
+  show: false,
+  type: types.maybe(types.string),
+}).actions(self => {
+  return {
+    setPopup(value) {
+      self.type = value
+      self.show = true
+    },
+    unsetPopup() {
+      self.type = ''
+      self.show = false
+    },
   }
+})
 
-
-  setPopup = (value) => {
-    this.type = value
-    this.show = true
-  }
-
-  unsetPopup = () => {
-    this.type = ''
-    this.show = false
-  }
-
-}
+export default Popup;

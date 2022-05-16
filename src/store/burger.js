@@ -1,49 +1,32 @@
-import {action, computed, makeObservable, observable} from "mobx";
-import {makeLoggable} from "mobx-log";
+import {types} from "mobx-state-tree";
 import {BUN} from "../utils/constants";
+import {Ingredient} from "./ingredients";
 
-export default class Burger {
-  bun = null
-  ingredients = []
-
-  constructor(store) {
-    this.store = store
-    makeObservable(this, {
-      bun: observable.struct,
-      ingredients: observable,
-      total: computed,
-      initBurger: action,
-      setBun: action,
-      addIngredient: action,
-      deleteIngredient: action,
-      sortIngredient: action,
-    })
-    makeLoggable(this)
+const Burger = types.model('Burger', {
+  bun: types.maybeNull(Ingredient),
+  ingredients: types.optional(types.array(Ingredient), []),
+}).actions(self => {
+  return {
+    initBurger() {
+      self.bun = null
+      self.ingredients = []
+    },
+    setBun(ingredient) {
+      self.bun = {...ingredient}
+    },
+    addIngredient(index, ingredient, uuid) {
+      self.ingredients.splice(index, 0, {...ingredient, uuid: uuid})
+    },
+    deleteIngredient(index) {
+      self.ingredients.splice(index, 1)
+    },
+    sortIngredient(fromIndex, toIndex) {
+      self.ingredients.splice(toIndex, 0, ...self.ingredients.splice(fromIndex, 1))
+    },
   }
-
+}).views(self => ({
   get total() {
-    return (this.bun ? [this.bun, ...this.ingredients] : [...this.ingredients]).reduce((acc, cur) => acc + (cur.type === BUN.key ? 2 : 1) * cur.price, 0)
-  }
-
-  initBurger = () => {
-    this.bun = null
-    this.ingredients = []
-  }
-
-  setBun = ingredient => {
-    this.bun = ingredient
-  }
-
-  addIngredient = (index, ingredient, uuid) => {
-    this.ingredients.splice(index, 0, {...ingredient, uuid: uuid})
-  }
-
-  deleteIngredient = index => {
-    this.ingredients.splice(index, 1)
-  }
-
-  sortIngredient = (fromIndex, toIndex) => {
-    this.ingredients.splice(toIndex, 0, ...this.ingredients.splice(fromIndex, 1))
-  }
-
-}
+    return (self.bun ? [self.bun, ...self.ingredients] : [...self.ingredients]).reduce((acc, cur) => acc + (cur.type === BUN.key ? 2 : 1) * cur.price, 0)
+  },
+}))
+export default Burger;

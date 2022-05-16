@@ -4,8 +4,8 @@ import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger
 import {useDrag, useDrop} from "react-dnd";
 import {ingredientType} from "../../utils/types";
 import PropTypes from "prop-types";
-import {useStore} from "../../store";
 import {observer} from "mobx-react";
+import useStore from "../../hooks/useStore";
 
 function BurgerConstructorItem(props) {
   const {ingredient, index} = props

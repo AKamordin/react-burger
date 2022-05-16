@@ -1,18 +1,14 @@
-import React from "react";
-import Ingredients from "./ingredients"
-import Popup from "./popup"
-import Order from "./order";
-import Burger from "./burger";
+import { types } from 'mobx-state-tree';
+import Ingredients from './ingredients';
+import Order from './order';
+import Popup from './popup';
+import Burger from './burger';
 
-class Store {
-  constructor() {
-    this.ingredientsStore = new Ingredients(this)
-    this.popupStore = new Popup(this)
-    this.orderStore = new Order(this)
-    this.burgerStore = new Burger(this)
-  }
-}
+const RootStore = types.model('RootStore', {
+  ingredientsStore: types.optional(Ingredients, {}),
+  orderStore: types.optional(Order, {}),
+  popupStore: types.optional(Popup, {}),
+  burgerStore: types.optional(Burger, {}),
+});
 
-const storeContext = React.createContext(new Store());
-
-export const useStore = () => React.useContext(storeContext);
+export default RootStore;

@@ -3,8 +3,8 @@ import styles from './order-details.module.css'
 import done from '../../images/done.gif'
 import {statusCooking} from "../../utils/constants";
 import PropTypes from "prop-types";
-import {useStore} from "../../store";
 import {observer} from "mobx-react";
+import useStore from "../../hooks/useStore";
 
 function OrderDetails(props) {
   const {onClose} = props

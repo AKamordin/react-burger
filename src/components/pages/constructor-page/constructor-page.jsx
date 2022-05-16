@@ -11,11 +11,11 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {Loader} from "../../loader/loader";
 import {observer} from "mobx-react";
-import {useStore} from "../../../store";
+import useStore from "../../../hooks/useStore";
 
 function ConstructorPage() {
   const {ingredientsStore, popupStore, orderStore, burgerStore} = useStore()
-  const {data, error, selected} = ingredientsStore
+  const {data, error, selected, loading} = ingredientsStore
   const {show, type} = popupStore
   const {error: orderError, loading: orderLoading} = orderStore
 
@@ -27,6 +27,10 @@ function ConstructorPage() {
     popupStore.unsetPopup()
     orderStore.initOrder()
     burgerStore.initBurger()
+  }
+
+  if (loading) {
+    return <Loader size="large" />
   }
 
   return (

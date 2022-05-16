@@ -1,14 +1,24 @@
-import React from 'react';
+import React, {createContext} from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.css';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
+import { connectReduxDevtools } from "mst-middlewares"
+
+import RootStore from './store';
+
+const store = RootStore.create({});
+
+export const StoreContext = createContext(store);
+connectReduxDevtools(require("remotedev"), store)
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <StoreContext.Provider value={store}>
+        <App />
+      </StoreContext.Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
