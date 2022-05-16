@@ -18,7 +18,7 @@ export const burgerSlice = createSlice({
         state.ingredients.splice(action.payload.index, 0, {...action.payload.ingredient, uuid: getUUID()})
     },
     deleteIngredient: (state, action) => {
-        this.ingredients.splice(action.payload, 1)
+        state.ingredients.splice(action.payload, 1)
     },
     sortIngredient: (state, action) => {
         state.ingredients.splice(action.payload.toIndex, 0, ...state.ingredients.splice(action.payload.fromIndex, 1))
