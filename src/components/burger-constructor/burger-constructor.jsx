@@ -12,8 +12,13 @@ function BurgerConstructor() {
   const {orderStore, burgerStore, popupStore} = useStore()
   const {bun, ingredients, total} = burgerStore
 
-  const handleMakeOrder = () => {
-    orderStore.makeOrder([bun, ...ingredients].map(i => i._id))
+  const handleMakeOrder = async () => {
+    try {
+      await orderStore.makeOrder([bun, ...ingredients].map(i => i._id))
+      popupStore.setPopup(ORDER)
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 
   const [{ isHover }, dropTarget] = useDrop({

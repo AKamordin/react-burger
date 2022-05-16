@@ -18,6 +18,7 @@
     "mobx-log": "^0.9.2",
     "mobx-react": "^7.3.0",
     "mobx-state-tree": "^5.1.5",
+    "mst-log": "^2.0.0",
     "mst-middlewares": "^5.1.5",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",

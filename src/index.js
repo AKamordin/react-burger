@@ -5,11 +5,13 @@ import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
 import { connectReduxDevtools } from "mst-middlewares"
+import { mstLog } from "mst-log";
 
 import RootStore from './store';
+import {addMiddleware} from "mobx-state-tree";
 
 const store = RootStore.create({});
-
+addMiddleware(store, mstLog());
 export const StoreContext = createContext(store);
 connectReduxDevtools(require("remotedev"), store)
 

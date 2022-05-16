@@ -34,10 +34,12 @@ const Order = types.model('Order', {
             self.makeSuccess(data)
           } else {
             self.makeError(data.message)
+            throw new Error(data.message)
           }
         },
         (err) => {
           self.makeError(err.message)
+          throw new Error(err.message)
         }
       )
     }),
