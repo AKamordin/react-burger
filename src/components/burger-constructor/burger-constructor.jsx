@@ -1,20 +1,28 @@
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor.module.css';
-import {makeOrder, setTotalOrder} from "../../services/actions/order";
-import {addIngredient, setBun} from "../../services/actions/burger";
-import {useDrop} from "react-dnd";
-import {BUN} from "../../utils/constants";
-import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import React from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {Button, ConstructorElement, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components'
+import styles from './burger-constructor.module.css'
+import {useDrop} from "react-dnd"
+import {BUN, ORDER} from "../../utils/constants"
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item"
+import {addIngredient, setBun} from "../../services/slices/burger"
+import {setPopup} from "../../services/slices/popup";
+import {bunBurgerSelector, ingredientsBurgerSelector, totalSelector} from "../../services/selectors/burger";
+import {orderAPI} from "../../services/api/order";
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch()
-  const order = useSelector(({order}) => order)
-  const burger = useSelector(({burger}) => burger)
+  const total = useSelector(totalSelector)
+  const bun = useSelector(bunBurgerSelector)
+  const ingredients = useSelector(ingredientsBurgerSelector)
+  // eslint-disable-next-line
+  const [makeOrder, {}] = orderAPI.useMakeOrderMutation()
 
-  const handleMakeOrder = () => {
-    dispatch(makeOrder([burger.bun, ...burger.ingredients].map(i => i._id)))
+  const handleMakeOrder = async () => {
+    const {data} = await makeOrder([bun, ...ingredients].map(i => i._id))
+    if (data?.success) {
+      dispatch(setPopup(ORDER))
+    }
   }
 
   const [{ isHover }, dropTarget] = useDrop({
@@ -26,30 +34,23 @@ export default function BurgerConstructor() {
       if (dragObj.ingredient.type === BUN.key) {
         dispatch(setBun(dragObj.ingredient))
       } else {
-        dispatch(addIngredient(0, dragObj.ingredient))
+        dispatch(addIngredient({index: 0, ingredient: dragObj.ingredient}))
       }
     }
   });
 
-  useEffect(() => {
-    if (burger.bun) {
-      dispatch(setTotalOrder([burger.bun, ...burger.ingredients]))
-    } else {
-      dispatch(setTotalOrder([...burger.ingredients]))
-    }
-  }, [dispatch, burger])
   return (
     <section className={`${styles.section} pt-20`}>
       <div ref={dropTarget} className={`${styles.dropArea} ${isHover && styles.droppable} pt-5 pb-5`}>
         <div className="pr-6">
           {
-            burger.bun ? (
+            bun ? (
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${burger.bun.name} (верх)`}
-              price={burger.bun.price}
-              thumbnail={burger.bun.image}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.image}
             />) : (
               <p className="text text_type_main-large pt-3">Пожалуйста, перенесите сюда булку для создания заказа</p>
             )
@@ -57,7 +58,7 @@ export default function BurgerConstructor() {
         </div>
         <ul className={`${styles.list} pl-4 pr-4`}>
           {
-            burger.ingredients.map((ingredient, index) =>
+            ingredients.map((ingredient, index) =>
               (
                   <BurgerConstructorItem key={ingredient.uuid} index={index} ingredient={ingredient} />
               )
@@ -66,24 +67,24 @@ export default function BurgerConstructor() {
         </ul>
         <div className="pr-6">
           {
-            burger.bun &&
+            bun &&
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={`${burger.bun.name} (низ)`}
-              price={burger.bun.price}
-              thumbnail={burger.bun.image}
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              thumbnail={bun.image}
             />
           }
         </div>
       </div>
       <div className={`${styles.button_container} pr-6`}>
         <div className='mr-10'>
-          <span className="text text_type_digits-medium mr-2">{order.total}</span>
+          <span className="text text_type_digits-medium mr-2">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
         {
-          burger && burger.bun &&
+          bun &&
           <Button onClick={handleMakeOrder} className="pt-10" type="primary" size="medium">Оформить заказ</Button>
         }
       </div>
