@@ -6,7 +6,7 @@ import AppHeaderNavLink from "../app-header-nav-link/app-header-nav-link"
 
 export default function AppHeader() {
   const location = useLocation()
-  const isConstructor = location.pathname === `${location.pathname.lastIndexOf("/") > 0 ? '/' : ''}`
+  const isConstructor = location.pathname === `/`
   const isOrders = location.pathname === `/orders`
   const isProfile = location.pathname === `/profile`
   return (
