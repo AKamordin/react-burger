@@ -4,18 +4,21 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
 import {useDispatch} from "react-redux";
-import {INGREDIENTS} from "../../utils/constants";
 import {useDrag} from "react-dnd";
-import {setPopup} from "../../services/slices/popup";
 import {setSelected} from "../../services/slices/ingredients";
+import {useNavigate} from "react-router-dom";
 
 export default function BurgerIngredientItem(props) {
   const {ingredient, count} = props;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleIngredientClick = () => {
     dispatch(setSelected(ingredient))
-    dispatch(setPopup(INGREDIENTS))
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: {background: true},
+      replace: false,
+    })
   }
 
   const [{ isDrag }, dragRef] = useDrag({

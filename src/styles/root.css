@@ -8,4 +8,10 @@
   --typography-font-family: 'JetBrains Mono', Arial, sans-serif;
   /* Borders */
   --droppable-border-color: #4C4CFF;
+  /* Links */
+  --link-color: #4C4CFF;
+  /* Input */
+  --input-error-color: #FF0000;
+  /* Text */
+  --text-color-white: #FFF;
 }

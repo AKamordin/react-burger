@@ -1,0 +1,56 @@
+.container {
+  margin: 0 auto;
+  padding-top: 180px;
+  width: 100%;
+  max-width: 1240px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.form {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputContainer,
+.inputContainer > div,
+.inputContainer > div > div {
+  width: 100%;
+}
+
+.menu {
+  width: 320px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link:hover {
+  opacity: .6;
+}
+
+.textColor {
+  color: var(--text-color-white);
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+
+

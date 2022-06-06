@@ -2,41 +2,34 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styles from './constructor-page.module.css'
 import pagesStyles from '../pages.module.css';
-import BurgerIngredients from "../../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../../burger-constructor/burger-constructor";
-import Modal from "../../modal/modal";
-import OrderDetails from "../../order-details/order-details";
-import BurgerIngredientDetails from "../../burger-ingredient-details/burger-ingredient-details";
-import {INGREDIENTS, ORDER} from "../../../utils/constants";
+import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
+import Modal from "../../components/modal/modal";
+import OrderDetails from "../../components/order-details/order-details";
+import {ORDER} from "../../utils/constants";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import {Loader} from "../../loader/loader";
-import {unsetPopup} from "../../../services/slices/popup";
-import {initBurger} from "../../../services/slices/burger";
-import {initDataOrder} from "../../../services/slices/order";
-import {ingredientsAPI} from "../../../services/api/ingredients";
+import {Loader} from "../../components/loader/loader";
+import {unsetPopup} from "../../services/slices/popup";
+import {initBurger} from "../../services/slices/burger";
+import {initDataOrder} from "../../services/slices/order";
+import {ingredientsAPI} from "../../services/api/ingredients";
 import {
   errorIngredientsSelector,
-  loadingIngredientsSelector,
-  selectedIngredientSelector
-} from "../../../services/selectors/ingredients";
-import {errorOrderSelector, loadingOrderSelector} from "../../../services/selectors/order";
-import {showPopupSelector, typePopupSelector} from "../../../services/selectors/popup";
+  loadingIngredientsSelector
+} from "../../services/selectors/ingredients";
+import {errorOrderSelector, loadingOrderSelector} from "../../services/selectors/order";
+import {showPopupSelector, typePopupSelector} from "../../services/selectors/popup";
 
 export default function ConstructorPage() {
   const dispatch = useDispatch()
   const {data: ingredients} =  ingredientsAPI.useGetIngredientsQuery();
   const ingredientsError = useSelector(errorIngredientsSelector)
   const ingredientsLoading = useSelector(loadingIngredientsSelector)
-  const selected = useSelector(selectedIngredientSelector)
   const orderError = useSelector(errorOrderSelector)
   const orderLoading = useSelector(loadingOrderSelector)
   const popupShow = useSelector(showPopupSelector)
   const popupType = useSelector(typePopupSelector)
-
-  const handleIngredientPopupClose = () => {
-    dispatch(unsetPopup())
-  }
 
   const handleOrderPopupClose = () => {
     dispatch(unsetPopup())
@@ -84,12 +77,6 @@ export default function ConstructorPage() {
           <Modal onClose={handleOrderPopupClose}>
             <OrderDetails onClose={handleOrderPopupClose} />
           </Modal>
-      }
-      {
-        popupShow && popupType === INGREDIENTS &&
-        <Modal title={'Детали ингредиентов'} onClose={handleIngredientPopupClose}>
-          <BurgerIngredientDetails ingredient={selected} />
-        </Modal>
       }
     </>
   )
