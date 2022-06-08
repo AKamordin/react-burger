@@ -15,6 +15,11 @@
   gap: 32px 24px;
 }
 
+.link {
+  color: var(--text-color-white);
+  text-decoration: none;
+}
+
 .title {
   margin-top: 0;
 }

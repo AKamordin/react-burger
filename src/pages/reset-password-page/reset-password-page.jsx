@@ -2,15 +2,15 @@ import React from "react"
 import styles from "../pages.module.css";
 import useFormData from "../../hooks/useFormData"
 import {Link, useNavigate} from "react-router-dom";
-import {authAPI} from "../../services/api/auth";
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {passAPI} from "../../services/api/pass";
 
 export default function ResetPasswordPage() {
-  const {values, setValues, errors, valid, handleChange} = useFormData()
+  const {values, setValues, valid, handleChange} = useFormData()
   const {password, token} = values
   const navigate = useNavigate()
   // eslint-disable-next-line
-  const [resetPassword, {}] = authAPI.useResetPasswordMutation()
+  const [resetPassword, {}] = passAPI.useResetPasswordMutation()
 
   const handleResetPassword = async () => {
     const {data} = await resetPassword({password, token})
@@ -37,7 +37,7 @@ export default function ResetPasswordPage() {
             placeholder={"Введите новый пароль"}
             value={password || ""}
             name={"password"}
-            error={errors.password}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />
@@ -48,7 +48,7 @@ export default function ResetPasswordPage() {
             placeholder={"Введите код из письма"}
             value={token || ""}
             name={"token"}
-            error={errors.token}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />

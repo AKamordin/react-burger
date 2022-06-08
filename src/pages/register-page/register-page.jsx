@@ -6,7 +6,7 @@ import useFormData from "../../hooks/useFormData"
 import {authAPI} from "../../services/api/auth";
 
 export default function RegisterPage() {
-  const {values, setValues, errors, valid, handleChange} = useFormData()
+  const {values, setValues, valid, handleChange} = useFormData()
   const navigate = useNavigate()
   const { name, email, password } = values
   // eslint-disable-next-line
@@ -37,7 +37,7 @@ export default function RegisterPage() {
             placeholder={"Имя"}
             value={name || ""}
             name={"name"}
-            error={errors.name}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />
@@ -48,7 +48,7 @@ export default function RegisterPage() {
             placeholder={"E-mail"}
             value={email || ""}
             name={"email"}
-            error={errors.email}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />
@@ -60,7 +60,7 @@ export default function RegisterPage() {
             size={"default"}
             type={"password"}
             placeholder={"Пароль"}
-            error={errors.password}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />

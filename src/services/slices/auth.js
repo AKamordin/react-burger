@@ -38,6 +38,7 @@ const authSlice = createSlice({
         setCookie("refreshToken", state.refreshToken);
       })
       .addMatcher(authAPI.endpoints.getUser.matchFulfilled, (state, action) => {
+        state.isAuth = true
         state.user = action.payload.success ? action.payload.user : {}
       })
       .addMatcher(authAPI.endpoints.getUser.matchRejected, (state, action) => {

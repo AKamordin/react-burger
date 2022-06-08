@@ -10,6 +10,7 @@ import authReducer from "../slices/auth"
 import {ingredientsAPI} from "../api/ingredients";
 import {orderAPI} from "../api/order";
 import {authAPI} from "../api/auth";
+import {passAPI} from "../api/pass";
 
 const rootReducer = combineReducers(
   {
@@ -21,6 +22,7 @@ const rootReducer = combineReducers(
     [ingredientsAPI.reducerPath]: ingredientsAPI.reducer,
     [orderAPI.reducerPath]: orderAPI.reducer,
     [authAPI.reducerPath]: authAPI.reducer,
+    [passAPI.reducerPath]: passAPI.reducer,
   }
 )
 const logger = createLogger()
@@ -31,7 +33,8 @@ const store = configureStore({
     logger,
     ingredientsAPI.middleware,
     orderAPI.middleware,
-    authAPI.middleware
+    authAPI.middleware,
+    passAPI.middleware
   ]),
   devTools: process.env.NODE_ENV === 'development',
   preloadedState: undefined,

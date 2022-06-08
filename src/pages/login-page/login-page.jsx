@@ -6,7 +6,7 @@ import useFormData from "../../hooks/useFormData";
 import {authAPI} from "../../services/api/auth";
 
 export default function LoginPage() {
-  const {values, setValues, errors, valid, handleChange} = useFormData()
+  const {values, setValues, valid, handleChange} = useFormData()
   const {email, password} = values
   const navigate = useNavigate()
   const location = useLocation()
@@ -36,7 +36,7 @@ export default function LoginPage() {
             placeholder={"E-mail"}
             value={email || ""}
             name={"email"}
-            error={errors.email}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />
@@ -48,7 +48,7 @@ export default function LoginPage() {
             size={"default"}
             type={"password"}
             placeholder={"Пароль"}
-            error={errors.password}
+            error={false}
             errorText={"Введите корректное значение"}
             onChange={handleChange}
           />

@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./ingredient-page.module.css"
 import {ingredientsAPI} from "../../services/api/ingredients";
-import {useLocation, useNavigate, useNavigationType, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import BurgerIngredientDetails from "../../components/burger-ingredient-details/burger-ingredient-details";
 import Modal from "../../components/modal/modal";
 
@@ -10,7 +10,6 @@ export default function IngredientPage() {
   const {ingredientId} = useParams()
   const ingredient = ingredients && ingredients.success ? ingredients.data.find(i => i._id === ingredientId) : null
   const navigate = useNavigate()
-  const action = useNavigationType()
   const location = useLocation()
   const background = location.state && location.state.background
 
@@ -24,8 +23,8 @@ export default function IngredientPage() {
 
   return (
     <>
-      {background && action === "PUSH" ? (
-        <Modal title={'Детали ингредиентов'} onClose={handleIngredientPopupClose}>
+      {background ? (
+        <Modal title={'Детали ингредиента'} onClose={handleIngredientPopupClose}>
           <BurgerIngredientDetails ingredient={ingredient} />
         </Modal>
       ) : (

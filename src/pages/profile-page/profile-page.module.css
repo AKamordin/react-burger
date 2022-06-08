@@ -1,6 +1,6 @@
 .container {
   margin: 0 auto;
-  padding-top: 180px;
+  padding-top: 120px;
   width: 100%;
   max-width: 1240px;
   display: flex;
@@ -48,8 +48,25 @@
 .buttons {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
+  gap: 20px;
+}
+
+.buttonLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 74px;
+  height: 56px;
+  cursor: pointer;
+  color: var(--link-color);
+  text-decoration: none;
+  transition: all ease 0.3s;
+}
+
+.buttonLink:hover {
+  opacity: .6;
 }
 
 

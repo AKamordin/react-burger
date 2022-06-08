@@ -6,11 +6,13 @@ import BurgerIngredientItem from "../burger-ingredient-item/burger-ingredient-it
 import {BUN} from "../../utils/constants";
 import {useSelector} from "react-redux";
 import {bunBurgerSelector, ingredientsBurgerSelector} from "../../services/selectors/burger";
+import {Link, useLocation} from "react-router-dom";
 
 export default function BurgerIngredientGroup(props) {
   const {title, ingredients} = props;
   const burgerBun = useSelector(bunBurgerSelector)
   const burgerIngredients = useSelector(ingredientsBurgerSelector)
+  const location = useLocation()
   function calcCount(ingredient) {
     if (ingredient.type === BUN.key) {
       return burgerBun && burgerBun._id === ingredient._id ? 1 : null
@@ -26,10 +28,15 @@ export default function BurgerIngredientGroup(props) {
           {
             ingredients.map(ingredient => (
               <li key={ingredient._id}>
-                <BurgerIngredientItem
-                  ingredient={ingredient}
-                  count={calcCount(ingredient)}
-                />
+                <Link className={`${styles.link}`}
+                  to={`/ingredients/${ingredient._id}`}
+                  state={{background: location}}
+                >
+                  <BurgerIngredientItem
+                    ingredient={ingredient}
+                    count={calcCount(ingredient)}
+                  />
+                </Link>
               </li>
             ))
           }

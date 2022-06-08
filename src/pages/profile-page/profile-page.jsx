@@ -5,17 +5,15 @@ import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components"
 import useFormData from "../../hooks/useFormData";
 import {authAPI} from "../../services/api/auth";
 import {useSelector} from "react-redux";
-import {refreshTokenSelector} from "../../services/selectors/auth";
-import {Loader} from "../../components/loader/loader";
+import {emailUserSelector, nameUserSelector, refreshTokenSelector} from "../../services/selectors/auth";
 
 export default function ProfilePage() {
-  const {values, setValues, valid, handleChange} = useFormData()
+  const {changed, values, setValues, valid, handleChange} = useFormData()
   const navigate = useNavigate()
   const {name, email, password} = values
-  const {data, isLoading: isUserLoading} = authAPI.useGetUserQuery()
   const refreshToken = useSelector(refreshTokenSelector)
-  const userName = data?.success ? data.user.name : null
-  const userEmail = data?.success ? data.user.email : null
+  const userName = useSelector(nameUserSelector)
+  const userEmail = useSelector(emailUserSelector)
   // eslint-disable-next-line
   const [logout, {}] = authAPI.useLogoutMutation()
   // eslint-disable-next-line
@@ -47,18 +45,14 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    if (data) {
+    if (userName || userEmail) {
       setValues({
-        name: data.user.name,
-        email: data.user.email,
+        name: userName,
+        email: userEmail,
         password: '',
       })
     }
-  }, [data, setValues])
-
-  if (isUserLoading) {
-    return <Loader size="large" />
-  }
+  }, [userName, userEmail, setValues])
 
   return (
     <article className={styles.container}>
@@ -136,11 +130,11 @@ export default function ProfilePage() {
           />
         </div>
         {
-          valid && (
-            <div className={`${styles.buttons} mt-6`}>
-              <Button type="primary" size="medium" onClick={handleReset}>
+          valid && changed && (
+            <div className={`${styles.buttons}`}>
+              <div className={styles.buttonLink} onClick={handleReset}>
                 Отмена
-              </Button>
+              </div>
               <Button type="primary" size="medium">
                 Сохранить
               </Button>

@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   const refreshToken = api.getState().auth.refreshToken
   let result = await baseQuery(args, api, extraOptions)
-  if (result.error && result.error.status === 401) {
+  if (refreshToken && result.error && (result.error.status === 401 || (result.error.status === 403 && result.error.message === 'jwt expired'))) {
     const refreshResult = await baseQuery({
       url: `/token`,
       method: 'POST',
@@ -80,25 +80,6 @@ export const authAPI = createApi({
           name: name,
           email: email,
           password: password,
-        }
-      }),
-    }),
-    forgotPassword: build.mutation({
-      query: (email) => ({
-        url: `/password-reset`,
-        method: 'POST',
-        body: {
-          email: email,
-        }
-      }),
-    }),
-    resetPassword: build.mutation({
-      query: ({password, token}) => ({
-        url: `/password-reset/reset`,
-        method: 'POST',
-        body: {
-          password: password,
-          token: token,
         }
       }),
     }),

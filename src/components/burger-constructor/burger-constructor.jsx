@@ -23,10 +23,13 @@ export default function BurgerConstructor() {
   const [makeOrder, {}] = orderAPI.useMakeOrderMutation()
 
   const handleMakeOrder = async () => {
-    !isAuth && navigate("/login", { replace: true })
-    const {data} = await makeOrder([bun, ...ingredients].map(i => i._id))
-    if (data?.success) {
-      dispatch(setPopup(ORDER))
+    if (isAuth) {
+      const {data} = await makeOrder([bun, ...ingredients].map(i => i._id))
+      if (data?.success) {
+        dispatch(setPopup(ORDER))
+      }
+    } else {
+      navigate("/login", { replace: true })
     }
   }
 
