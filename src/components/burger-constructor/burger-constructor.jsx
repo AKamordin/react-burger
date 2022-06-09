@@ -9,9 +9,13 @@ import {addIngredient, setBun} from "../../services/slices/burger"
 import {setPopup} from "../../services/slices/popup";
 import {bunBurgerSelector, ingredientsBurgerSelector, totalSelector} from "../../services/selectors/burger";
 import {orderAPI} from "../../services/api/order";
+import {isAuthSelector} from "../../services/selectors/auth";
+import {useNavigate} from "react-router-dom";
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const isAuth = useSelector(isAuthSelector)
   const total = useSelector(totalSelector)
   const bun = useSelector(bunBurgerSelector)
   const ingredients = useSelector(ingredientsBurgerSelector)
@@ -19,9 +23,13 @@ export default function BurgerConstructor() {
   const [makeOrder, {}] = orderAPI.useMakeOrderMutation()
 
   const handleMakeOrder = async () => {
-    const {data} = await makeOrder([bun, ...ingredients].map(i => i._id))
-    if (data?.success) {
-      dispatch(setPopup(ORDER))
+    if (isAuth) {
+      const {data} = await makeOrder([bun, ...ingredients].map(i => i._id))
+      if (data?.success) {
+        dispatch(setPopup(ORDER))
+      }
+    } else {
+      navigate("/login", { replace: true })
     }
   }
 

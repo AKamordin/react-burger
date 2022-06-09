@@ -3,20 +3,10 @@ import styles from './burger-ingredient-item.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {ingredientType} from "../../utils/types";
-import {useDispatch} from "react-redux";
-import {INGREDIENTS} from "../../utils/constants";
 import {useDrag} from "react-dnd";
-import {setPopup} from "../../services/slices/popup";
-import {setSelected} from "../../services/slices/ingredients";
 
 export default function BurgerIngredientItem(props) {
   const {ingredient, count} = props;
-  const dispatch = useDispatch();
-
-  const handleIngredientClick = () => {
-    dispatch(setSelected(ingredient))
-    dispatch(setPopup(INGREDIENTS))
-  }
 
   const [{ isDrag }, dragRef] = useDrag({
     type: "ingredients",
@@ -27,7 +17,7 @@ export default function BurgerIngredientItem(props) {
   });
 
   return (
-    <article ref={dragRef} onClick={handleIngredientClick} className={`${styles.item} ${isDrag && styles.dragging}`}>
+    <article ref={dragRef} className={`${styles.item} ${isDrag && styles.dragging}`}>
       {
         count > 0 &&
         <Counter count={count} size="default" />

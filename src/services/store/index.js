@@ -6,8 +6,11 @@ import ingredientsReducer from "../slices/ingredients"
 import orderReducer from "../slices/order"
 import burgerReducer from "../slices/burger"
 import popupReducer from "../slices/popup"
+import authReducer from "../slices/auth"
 import {ingredientsAPI} from "../api/ingredients";
 import {orderAPI} from "../api/order";
+import {authAPI} from "../api/auth";
+import {passAPI} from "../api/pass";
 
 const rootReducer = combineReducers(
   {
@@ -15,15 +18,24 @@ const rootReducer = combineReducers(
     order: orderReducer,
     popup: popupReducer,
     burger: burgerReducer,
+    auth: authReducer,
     [ingredientsAPI.reducerPath]: ingredientsAPI.reducer,
     [orderAPI.reducerPath]: orderAPI.reducer,
+    [authAPI.reducerPath]: authAPI.reducer,
+    [passAPI.reducerPath]: passAPI.reducer,
   }
 )
 const logger = createLogger()
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([logger, ingredientsAPI.middleware, orderAPI.middleware]),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
+    logger,
+    ingredientsAPI.middleware,
+    orderAPI.middleware,
+    authAPI.middleware,
+    passAPI.middleware
+  ]),
   devTools: process.env.NODE_ENV === 'development',
   preloadedState: undefined,
   enhancers: [monitor]

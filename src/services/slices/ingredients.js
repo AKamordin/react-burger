@@ -29,9 +29,11 @@ export const ingredientsSlice = createSlice({
         state.ingredients.error = action.payload.success ? null : ('Статус: ' + action.payload.originalStatus + '. ' + action.error.message)
       })
       .addMatcher(ingredientsAPI.endpoints.getIngredients.matchRejected, (state, action) => {
-        state.ingredients.data = []
         state.ingredients.loading = false
-        state.ingredients.error = 'Статус: ' + action.payload.originalStatus + '. ' + action.error.message
+        if (action.error.name !== "ConditionError") {
+          state.ingredients.data = []
+          state.ingredients.error = action.error.message
+        }
       })
   },
 })
