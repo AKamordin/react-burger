@@ -35,7 +35,7 @@ export default function App() {
         <AppHeader />
         <Routes location={background || location}>
           <Route exact path={`/`} element={<ConstructorPage />} />
-          <Route element={<RequireNoAuthRoute isAuth={isAuth} redirectTo={`/`}/>}>
+          <Route element={<RequireNoAuthRoute isAuth={isAuth} redirectTo={location.state ? location.state.from : '/'}/>}>
             <Route exact path={`/register`} element={<RegisterPage />} />
             <Route exact path={`/login`} element={<LoginPage />} />
             <Route exact path={`/forgot-password`} element={<ForgotPasswordPage />} />

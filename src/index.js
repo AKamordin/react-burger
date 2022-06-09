@@ -10,7 +10,7 @@ import configureStore from './services/store'
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={configureStore}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
