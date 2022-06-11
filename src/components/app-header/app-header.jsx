@@ -7,8 +7,8 @@ import AppHeaderNavLink from "../app-header-nav-link/app-header-nav-link"
 export default function AppHeader() {
   const location = useLocation()
   const isConstructor = location.pathname === `/`
-  const isOrders = location.pathname === `/orders`
-  const isProfile = location.pathname === `/profile`
+  const isOrders = location.pathname.startsWith(`/feed`)
+  const isProfile = location.pathname.startsWith(`/profile`)
   return (
     <header className={`${styles.header}`}>
       <nav className={`${styles.header__container}`}>
@@ -19,7 +19,7 @@ export default function AppHeader() {
             </AppHeaderNavLink>
           </li>
           <li className={styles.header__navItem}>
-            <AppHeaderNavLink to={`/orders`} active={isOrders} text={'Лента заказов'}>
+            <AppHeaderNavLink to={`/feed`} active={isOrders} text={'Лента заказов'}>
               <ListIcon type={isOrders ? "primary" : "secondary"} />
             </AppHeaderNavLink>
           </li>

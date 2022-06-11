@@ -17,6 +17,9 @@ import {isAuthSelector} from "../../services/selectors/auth";
 import {authAPI} from "../../services/api/auth";
 import {Loader} from "../loader/loader";
 import RequireNoAuthRoute from "../require-no-auth-route/require-no-auth-route";
+import OrderPage from "../../pages/order-page/order-page";
+import OrdersHistory from "../orders-history/orders-history";
+import ProfileMain from "../profile-main/profile-main";
 
 export default function App() {
   const {isLoading: isUserLoading} = authAPI.useGetUserQuery()
@@ -43,19 +46,32 @@ export default function App() {
           <Route element={<RequireNoAuthRoute isAuth={isAuth} redirectTo={`/login`} redirectOnlyFrom={`/forgot-password`}/>}>
             <Route exact path={`/reset-password`} element={<ResetPasswordPage />} />
           </Route>
-          <Route exact path={`/orders`} element={<OrdersPage />} />
-          <Route path={`/profile`} element={
+          <Route exact path={`/feed`} element={<OrdersPage />} />
+          <Route path={`/profile/orders/:orderId`} element={
             <RequireAuthRoute isAuth={isAuth} redirectTo={`/login`}>
-              <ProfilePage />
+              <OrderPage />
+            </RequireAuthRoute>
+          } />
+          <Route path={`/profile/*`} element={
+            <RequireAuthRoute isAuth={isAuth} redirectTo={`/login`}>
+              <Routes>
+                <Route path={`*`} element={<ProfilePage />}>
+                  <Route index element={<ProfileMain />} />
+                  <Route path={`orders`} element={<OrdersHistory />} />
+                  <Route path={`orders/:orderId`} element={<OrderPage />} />
+                </Route>
+              </Routes>
             </RequireAuthRoute>
           } />
           <Route path={`/ingredients/:ingredientId`} element={<IngredientPage />} />
+          <Route path={`/feed/:orderId`} element={<OrderPage />} />
           <Route path={"*"} element={<NotFoundPage />} />
         </Routes>
         {
           background &&
           <Routes>
             <Route path={`/ingredients/:ingredientId`} element={<IngredientPage />} />
+            <Route path={`/feed/:orderId`} element={<OrderPage />} />
           </Routes>
         }
       </div>

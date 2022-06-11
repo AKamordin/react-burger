@@ -1,11 +1,11 @@
-import {statusCooking} from "../../utils/constants";
+import {statusCreated} from "../../utils/constants";
 import {createSlice} from "@reduxjs/toolkit";
 import {orderAPI} from "../api/order";
 
 const initialState = {
   name: null,
   number: null,
-  status: statusCooking,
+  status: statusCreated,
   loading: false,
   error: null,
 }

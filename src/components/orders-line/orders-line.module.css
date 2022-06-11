@@ -1,0 +1,28 @@
+.orders {
+  list-style: none;
+  padding: 0;
+  max-height: calc(100vh - 188px - 44px);
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  overflow-y: scroll;
+}
+
+.orders::-webkit-scrollbar-thumb {
+  border: none;
+  border-radius: 0;
+}
+
+.orders::-webkit-scrollbar {
+  width: 8px;
+}
+
+.link{
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.done {
+  color: var(--colors-interface-success)
+}
