@@ -1,6 +1,5 @@
 .container {
   margin: 0 auto;
-  padding-top: 120px;
   width: 100%;
   max-width: 1240px;
   display: flex;
@@ -9,21 +8,8 @@
   align-items: flex-start;
 }
 
-.form {
-  width: 480px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.inputContainer,
-.inputContainer > div,
-.inputContainer > div > div {
-  width: 100%;
-}
-
-.menu {
+.nav {
+  padding-top: 120px;
   width: 320px;
 }
 
@@ -41,33 +27,14 @@
   opacity: .6;
 }
 
+.quit {
+  cursor: pointer;
+}
+
 .textColor {
   color: var(--text-color-white);
 }
 
-.buttons {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.buttonLink {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 74px;
-  height: 56px;
-  cursor: pointer;
-  color: var(--link-color);
-  text-decoration: none;
-  transition: all ease 0.3s;
-}
-
-.buttonLink:hover {
-  opacity: .6;
-}
 
 
 

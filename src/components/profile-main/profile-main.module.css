@@ -1,0 +1,38 @@
+.form {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 120px;
+}
+
+.inputContainer,
+.inputContainer > div,
+.inputContainer > div > div {
+  width: 100%;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.buttonLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 74px;
+  height: 56px;
+  cursor: pointer;
+  color: var(--link-color);
+  text-decoration: none;
+  transition: all ease 0.3s;
+}
+
+.buttonLink:hover {
+  opacity: .6;
+}

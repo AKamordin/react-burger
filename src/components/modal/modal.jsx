@@ -6,7 +6,7 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
 
 export default function Modal(props) {
-  const {title, onClose, children} = props;
+  const {title, isOrder, onClose, children} = props;
 
   useEffect(() => {
     const handleEscKeydown = (event) => {
@@ -24,7 +24,7 @@ export default function Modal(props) {
         <header className={styles.header}>
           {
             title &&
-            <h2 className={`${styles.title} text text_type_main-large`}>{title}</h2>
+            <h2 className={`${styles.title} text ${isOrder ? 'text_type_main-medium' : 'text_type_main-large'}`}>{title}</h2>
           }
           <button onClick={onClose} className={styles.closeButton}>
             <CloseIcon type="primary" />
@@ -42,6 +42,7 @@ export default function Modal(props) {
 
 Modal.propTypes = {
   title: PropTypes.string,
+  isOrder: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 };
