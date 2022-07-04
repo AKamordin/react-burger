@@ -32,9 +32,9 @@ export default function BurgerIngredients() {
     }
   }
 
-  const bunInView = useInView(bunRef)
-  const sauceInView = useInView(sauceRef)
-  const mainInView = useInView(mainRef)
+  const bunInView = useInView(bunRef as MutableRefObject<HTMLLIElement>)
+  const sauceInView = useInView(bunRef as MutableRefObject<HTMLLIElement>)
+  const mainInView = useInView(bunRef as MutableRefObject<HTMLLIElement>)
 
   useEffect(() => {
     if (bunInView) {
