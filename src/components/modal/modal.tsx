@@ -9,7 +9,7 @@ const Modal: FC<{ title?: string, isOrder?: boolean, onClose: () => void}> = ({t
   const root: HTMLElement = document.querySelector('#modals') as HTMLElement
 
   useEffect(() => {
-    const handleEscKeydown = (event: {key: string}) => {
+    const handleEscKeydown = (event: KeyboardEvent) => {
       event.key === "Escape" && onClose()
     }
     document.addEventListener('keydown', handleEscKeydown)
